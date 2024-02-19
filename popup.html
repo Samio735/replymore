@@ -1,0 +1,113 @@
+<html lang="en" style="width: fit-content;">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <title>Document</title>
+
+  <body
+    style="
+      margin: 10px;
+      background-color: rgb(29, 155, 240);
+      color: aliceblue;
+      border-radius: 20px;
+      width: fit-content;
+    "
+  >
+  <style>
+    button {
+      color: #1775b5;
+      background-color: #f0f8ff;
+      border: 0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: all 0.1s ease-in-out;
+    }
+    button:hover {
+      background-color:  #c2d0db;
+    }
+    button:active {
+      background-color: #084f7e;
+      color: #f0f8ff;
+    }
+    input::placeholder {
+      color: rgba(240, 248, 255, 0.465);
+    }
+
+    </style>
+    <div style="margin: 0 6px;">
+        <div style="width: 100%; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 6px;">
+                             <span><svg viewBox="0 0 24 24"  style="color: rgb(255, 255, 255); fill: #ffffff;width: 30px;"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"></path></g></svg></span>
+
+            <h2>
+                  <span>Reply more</span>
+                </h2>
+        </div>
+      <div style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center;">
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="fill: #ffffff; width: 20px; margin-right: 6px;">
+            <g>
+                <path d="M17.863 13.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44zM12 2C9.791 2 8 3.79 8 6s1.791 4 4 4 4-1.79 4-4-1.791-4-4-4z"></path>
+            </g>
+            </svg>
+        <input
+          type="text"
+          id="user_id"
+          placeholder="Samyrahim7"
+          style="
+          height: 100%;
+            background-color: #1775b5;
+            color: aliceblue;
+            border: 0;
+            padding: 2px 4px;
+            border-radius: 8px;
+                  transition: all 0.3s ease-in-out;
+
+          "
+        />
+      </div>
+      <div
+        id="status"
+        style="
+          margin-top: 6px;
+          width: 100%;
+          display: flex;
+            justify-content: center;
+          gap: 8px;
+          margin-bottom: 20px;
+        "
+      >
+
+        <button
+          id="save"
+     
+        >
+          Save
+        </button>
+
+
+        <button id="reset" >Reset stats</button>
+ 
+      </div>
+      <div
+        id="status"
+        style="
+        padding-bottom: 6px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+ 
+        "
+      >
+        <a
+          href="https://twitter.com/Samyrahim7"
+          target="_blank"
+          style="text-align: center; color: aliceblue"
+          >follow me on X</a
+        >
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
