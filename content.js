@@ -1,23 +1,47 @@
 let inserted = false;
-function updatePostCountUI(postCount) {
-  const followersEL = document.querySelector(
-    `a[href="/${userId}/verified_followers"]`
-  );
-  if (!followersEL) return;
-  if (inserted) {
-    document.getElementById(
-      "replies-count"
-    ).innerHTML = `<span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3" style="text-overflow: unset;">${postCount}</span></span><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3 r-n6v787 r-fxxt2n" style="text-overflow: unset; color: rgb(139, 152, 165);"><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3" style="text-overflow: unset;"> Replies</span></span>`;
-    return;
-  }
-  console.log("inserted");
-  followersEL.classList.add("r-le9fof");
-  followersEL.parentElement.insertAdjacentHTML(
-    "afterend",
-    `<div class="css-175oi2r"><a href="twitter.com/Samyrahim7" id="replies-count" dir="ltr" role="link" class="css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-1b43r93 r-hjklzo r-16dba41 r-1loqt21" style="text-overflow: unset; color: rgb(247, 249, 249);"><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3 r-n6v787 r-fxxt2n r-b88u0q" style="text-overflow: unset; color: rgb(247, 249, 249);"><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3 r-n6v787 r-fxxt2n r-b88u0q" style="text-overflow: unset; color: rgb(247, 249, 249);"><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3" style="text-overflow: unset;">${postCount}</span></span><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3 r-n6v787 r-fxxt2n" style="text-overflow: unset; color: rgb(139, 152, 165);"><span class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3" style="text-overflow: unset;"> Replies</span></span></a></div>`
-  );
-  inserted = true;
-}
+// to do if implemented : change color on darkmode and lightmode
+// function updatePostCountUI(postCount) {
+//   const followersEL = document.querySelector(
+//     `a[href="/${userId}/verified_followers"]`
+//   );
+//   if (!followersEL) return;
+//   if (inserted) {
+//     document.getElementById(
+//       "replies-count"
+//     ).innerHTML = `<div class="css-175oi2r"><a href="twitter.com/Samyrahim7" id="replies-count" dir="ltr" role="link" class="${followersEL.getAttribute(
+//       "class"
+//     )}" style="text-overflow: unset; ;"><span class="${followersEL.firstElementChild.getAttribute(
+//       "class"
+//     )}" style="text-overflow: unset; ;"><span class=""><span class="${followersEL.firstElementChild.firstElementChild.getAttribute(
+//       "class"
+//     )}">${postCount}</span></span><span class="${followersEL.children[1].getAttribute(
+//       "class"
+//     )}" "><span class="${followersEL.children[1].firstElementChild.getAttribute(
+//       "class"
+//     )}}" style="text-overflow: unset;"> Replies</span></span></a></div>`;
+//     return;
+//   }
+//   console.log("inserted");
+//   // create a list from element classList
+//   const classList = Array.from(followersEL.classList);
+//   followersEL.classList.add("r-le9fof");
+//   followersEL.parentElement.insertAdjacentHTML(
+//     "afterend",
+//     `<div class="css-175oi2r"><a href="twitter.com/Samyrahim7" id="replies-count" dir="ltr" role="link" class="${followersEL.getAttribute(
+//       "class"
+//     )}" style="text-overflow: unset; ;"><span class="${followersEL.firstElementChild.getAttribute(
+//       "class"
+//     )}" style="text-overflow: unset; ;"><span class=""><span class="${followersEL.firstElementChild.firstElementChild.getAttribute(
+//       "class"
+//     )}">${postCount}</span></span><span class="${followersEL.children[1].getAttribute(
+//       "class"
+//     )}" "><span class="${followersEL.children[1].firstElementChild.getAttribute(
+//       "class"
+//     )}}" style="text-overflow: unset;"> Replies</span></span></a></div>`
+//   );
+
+//   inserted = true;
+// }
 
 let postCount = chrome.storage.sync.get("postCount", (data) => {
   postCount = data.postCount || 0;
@@ -78,7 +102,7 @@ document.addEventListener("click", function (event) {
       todayCount++;
       chrome.storage.sync.set({ postCount: postCount, todayCount: todayCount });
       updateStatsElement();
-      updatePostCountUI(postCount);
+      // updatePostCountUI(postCount);
     });
   }
 });
@@ -114,8 +138,9 @@ chrome.storage.sync.get("postCount", (data) => {
 setTimeout(() => {
   setInterval(() => {
     chrome.storage.sync.get("postCount", (data) => {
-      let postCount = data.postCount || 0;
-      updatePostCountUI(postCount);
+      let postCount = data.postCount;
+      if (postCount == undefined) postCount = 0;
+      // updatePostCountUI(postCount);
     });
   }, 100);
 }, 200);
@@ -131,7 +156,7 @@ function playAudio() {
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.postCount) {
     updateStatsElement();
-    updatePostCountUI(changes.postCount.newValue);
+    // updatePostCountUI(changes.postCount.newValue);
   }
 });
 
