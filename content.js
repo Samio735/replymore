@@ -82,6 +82,7 @@ function createProgressBar() {
   progressBarContainer.id = "post-progress-bar-container";
   progressBarContainer.style.height = "3px";
   progressBarContainer.style.width = "100%";
+  progressBarContainer.style.minWidth = "100px";
   progressBarContainer.style.backgroundColor = " #106aa6";
   progressBarContainer.style.zIndex = "9999";
   progressBarContainer.style.margin = "0 10px";
@@ -103,8 +104,20 @@ function createProgressBar() {
 
 function updateStatsElement() {
   chrome.storage.sync.get(
-    ["postCount", "countDays", "todayCount", "dailyGoal"],
+    [
+      "postCount",
+      "countDays",
+      "todayCount",
+      "dailyGoal",
+      "showTodayCount",
+      "showOverallCount",
+      "showDailyAverage",
+      "showTodayTime",
+      "showAverageTime",
+      "showTimePerTweet",
+    ],
     (data) => {
+      console.log(data);
       const statsElement = document.getElementById("post-stats");
       if (data.postCount == undefined) data.postCount = 0;
       if (data.countDays == undefined) data.countDays = 1;
@@ -116,9 +129,40 @@ function updateStatsElement() {
       statsElement.innerHTML =
         // Replace with actual daily average of posts and comments
         `<span><svg viewBox="0 0 24 24" aria-hidden="true" class="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1qtyvf0 r-o4n3w5" style="color: rgb(255, 255, 255); margin-right:2px;"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"></path></g></svg></span>  
-      Today : ${data.todayCount}${
-          data.dailyGoal > 0 ? `/${data.dailyGoal}` : ""
-        }    | Avg : ${dailyAverage} / day `;
+        ${
+          data.showTodayCount
+            ? `Today : ${data.todayCount} ${
+                data.dailyGoal > 0 ? `/${data.dailyGoal} ` : ""
+              }       
+`
+            : ``
+        }
+        ${data.showTodayCount && data.showTodayTime ? `in` : ""}
+        ${data.showTodayTime ? ` 0m ` : ""}
+        ${data.showTodayCount && data.showOverallCount ? "|" : ""}
+        ${data.showOverallCount ? ` Total : ${data.postCount} ` : ""}
+        ${
+          (data.showTodayCount || data.showTodayTime) &&
+          (data.showDailyAverage || data.showAverageTime)
+            ? "|"
+            : ""
+        }
+        ${data.showDailyAverage || data.showAverageTime ? " Avg :" : ""}
+        ${data.showDailyAverage ? ` ${dailyAverage} ` : ""} 
+        ${data.showDailyAverage && data.showAverageTime ? `in` : ""}
+        ${data.showAverageTime ? ` 0m ` : ""}
+        ${
+          (data.showTodayCount ||
+            data.showTodayTime ||
+            data.showOverallCount ||
+            data.showDailyAverage ||
+            data.showAverageTime) &&
+          data.showTimePerTweet
+            ? "|"
+            : ""
+        }
+        ${data.showTimePerTweet ? ` Rate : 0 m` : ""} 
+      `;
     }
   );
 }
@@ -129,18 +173,18 @@ function updateProgressBar() {
         "post-progress-bar-container"
       );
       progressBarContainer.style.display = "none";
-      console.log("hidden");
       return;
     }
 
     const progressBarContainer = document.getElementById(
       "post-progress-bar-container"
     );
-    console.log("not hidden");
 
     progressBarContainer.style.display = "block";
     const progressBar = document.getElementById("post-progress-bar");
-    const progress = (data.postCount / data.dailyGoal) * 100;
+    let progress = (data.postCount / data.dailyGoal) * 100;
+    if (progress > 100) progress = 100;
+    console.log(progress);
     progressBar.style.width = `${progress}%`;
   });
 }
@@ -160,19 +204,10 @@ document.addEventListener("click", function (event) {
       todayCount = data.todayCount || 0;
       todayCount++;
       chrome.storage.sync.set({ postCount: postCount, todayCount: todayCount });
-      updateStatsElement();
-      updateProgressBar();
-      // updatePostCountUI(postCount);
+      updateStatsUI();
     });
   }
 });
-
-// let userId;
-// chrome.storage.sync.get("userId", (data) => {
-//   userId = data.userId;
-//   console.log(userId);
-// });
-// console.log(userId);
 
 function checkDateChange() {
   const today = new Date().toLocaleDateString();
@@ -193,19 +228,8 @@ function init() {
   createContainer();
   createStatsElement();
   createProgressBar();
+  updateStatsUI();
 }
-
-// Select the followers element and update the text
-
-// setTimeout(() => {
-//   setInterval(() => {
-//     chrome.storage.sync.get("postCount", (data) => {
-//       let postCount = data.postCount;
-//       if (postCount == undefined) postCount = 0;
-//       // updatePostCountUI(postCount);
-//     });
-//   }, 100);
-// }, 200);
 
 const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
 

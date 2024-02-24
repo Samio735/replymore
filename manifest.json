@@ -4,6 +4,9 @@
   "description": "Tweets and replies tracker to motivate you to engage more",
   "version": "0.0.5",
   "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "web_accessible_resources": [
     {
       "resources": ["Ding.mp3"],
