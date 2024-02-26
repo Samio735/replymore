@@ -3,15 +3,17 @@ const dailyGoalEl = document.getElementById("daily-goal");
 const todayCountEl = document.getElementById("today-count");
 const overallCountEl = document.getElementById("overall-count");
 const dailyAverageEl = document.getElementById("daily-average");
-// const todayTimeEl = document.getElementById("today-time");
-// const averageTimeEl = document.getElementById("average-time");
-// const timePerTweetEl = document.getElementById("time-per-tweet");
+const todayTimeEl = document.getElementById("today-time");
+const averageTimeEl = document.getElementById("average-time");
+const timePerTweetEl = document.getElementById("time-per-tweet");
+const todayRateEl = document.getElementById("today-rate");
 const showTodayCountEl = document.getElementById("show-today-count");
 const showOverallCountEl = document.getElementById("show-overall-count");
 const showDailyAverageEl = document.getElementById("show-daily-average");
-// const showTodayTimeEl = document.getElementById("show-today-time");
-// const showAverageTimeEl = document.getElementById("show-average-time");
-// const showTimePerTweetEl = document.getElementById("show-time-per-tweet");
+const showTodayTimeEl = document.getElementById("show-today-time");
+const showAverageTimeEl = document.getElementById("show-average-time");
+const showTimePerTweetEl = document.getElementById("show-time-per-tweet");
+const showTodayRateEl = document.getElementById("show-today-rate");
 
 ResetBtn.addEventListener("click", () => {
   chrome.storage.sync.set({ todayCount: 0, postCount: 0, countDays: 1 });
@@ -31,17 +33,22 @@ showDailyAverageEl.addEventListener("change", (e) => {
   chrome.storage.sync.set({ showDailyAverage: e.target.checked });
 });
 
-// showTodayTimeEl.addEventListener("change", (e) => {
-//   chrome.storage.sync.set({ showTodayTime: e.target.checked });
-// });
+showTodayTimeEl.addEventListener("change", (e) => {
+  chrome.storage.sync.set({ showTodayTime: e.target.checked });
+});
 
-// showAverageTimeEl.addEventListener("change", (e) => {
-//   chrome.storage.sync.set({ showAverageTime: e.target.checked });
-// });
+showAverageTimeEl.addEventListener("change", (e) => {
+  chrome.storage.sync.set({ showAverageTime: e.target.checked });
+  console.log("hello");
+});
 
-// showTimePerTweetEl.addEventListener("change", (e) => {
-//   chrome.storage.sync.set({ showTimePerTweet: e.target.checked });
-// });
+showTimePerTweetEl.addEventListener("change", (e) => {
+  chrome.storage.sync.set({ showTimePerTweet: e.target.checked });
+});
+
+showTodayRateEl.addEventListener("change", (e) => {
+  chrome.storage.sync.set({ showTodayRate: e.target.checked });
+});
 
 dailyGoalEl.addEventListener("change", (e) => {
   chrome.storage.sync.set({
@@ -63,6 +70,7 @@ chrome.storage.sync.get(
     "showTodayTime",
     "showAverageTime",
     "showTimePerTweet",
+    "showTodayRate",
   ],
   (data) => {
     const dailyGoal = data.dailyGoal || 0;
@@ -77,19 +85,25 @@ chrome.storage.sync.get(
     const showTodayTime = !!data.showTodayTime ? "true" : "false";
     const showAverageTime = !!data.showAverageTime ? "true" : "false";
     const showTimePerTweet = !!data.showTimePerTweet ? "true" : "false";
+    const showTodayRate = !!data.showTodayRate ? "true" : "false";
 
     dailyGoalEl.value = dailyGoal;
     todayCountEl.textContent = todayCount;
     overallCountEl.textContent = postCount;
     dailyAverageEl.textContent = (postCount / countDays).toFixed(1);
-    // todayTimeEl.textContent = timeSpentToday;
-    // averageTimeEl.textContent = Math.round(timeSpent / countDays);
-    // timePerTweetEl.textContent = (timeSpent / postCount).toFixed(1);
+    todayTimeEl.textContent = Math.round(timeSpentToday / 60);
+    averageTimeEl.textContent = Math.round(timeSpent / 60 / countDays);
+    timePerTweetEl.textContent = (timeSpent / postCount).toFixed(1);
+    todayRateEl.textContent = (
+      data.todayCount /
+      (data.timeSpentToday / (60 * 60))
+    ).toFixed(1);
     showTodayCountEl.checked = showTodayCount === "true";
     showOverallCountEl.checked = showOverallCount === "true";
     showDailyAverageEl.checked = showDailyAverage === "true";
-    // showTodayTimeEl.checked = showTodayTime === "true";
-    // showAverageTimeEl.checked = showAverageTime === "true";
-    // showTimePerTweetEl.checked = showTimePerTweet === "true";
+    showTodayTimeEl.checked = showTodayTime === "true";
+    showAverageTimeEl.checked = showAverageTime === "true";
+    showTimePerTweetEl.checked = showTimePerTweet === "true";
+    showTodayRateEl.checked = showTodayRate === "true";
   }
 );

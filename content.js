@@ -115,6 +115,9 @@ function updateStatsElement() {
       "showTodayTime",
       "showAverageTime",
       "showTimePerTweet",
+      "showTodayRate",
+      "timeSpent",
+      "timeSpentToday",
     ],
     (data) => {
       console.log(data);
@@ -132,13 +135,23 @@ function updateStatsElement() {
         ${
           data.showTodayCount
             ? `Today : ${data.todayCount} ${
-                data.dailyGoal > 0 ? `/${data.dailyGoal} ` : ""
-              }       
+                data.dailyGoal > 0 ? `/${data.dailyGoal}` : ""
+              }
 `
             : ``
         }
-        ${data.showTodayCount && data.showTodayTime ? `in` : ""}
-        ${data.showTodayTime ? ` 0m ` : ""}
+        ${data.showTodayCount && data.showTodayTime ? ` in` : ""}
+        ${
+          data.showTodayTime ? ` ${Math.round(data.timeSpentToday / 60)}m ` : ""
+        }
+         ${
+           data.showTodayRate
+             ? ` going ${(
+                 data.todayCount /
+                 (data.timeSpentToday / (60 * 60))
+               ).toFixed(1)} r/h`
+             : ""
+         } 
         ${data.showTodayCount && data.showOverallCount ? "|" : ""}
         ${data.showOverallCount ? ` Total : ${data.postCount} ` : ""}
         ${
@@ -147,21 +160,26 @@ function updateStatsElement() {
             ? "|"
             : ""
         }
-        ${data.showDailyAverage || data.showAverageTime ? " Avg :" : ""}
-        ${data.showDailyAverage ? ` ${dailyAverage} ` : ""} 
-        ${data.showDailyAverage && data.showAverageTime ? `in` : ""}
-        ${data.showAverageTime ? ` 0m ` : ""}
         ${
-          (data.showTodayCount ||
-            data.showTodayTime ||
-            data.showOverallCount ||
-            data.showDailyAverage ||
-            data.showAverageTime) &&
-          data.showTimePerTweet
-            ? "|"
+          data.showDailyAverage || data.showAverageTime || data.showTimePerTweet
+            ? " Avg :"
             : ""
         }
-        ${data.showTimePerTweet ? ` Rate : 0 m` : ""} 
+        ${data.showDailyAverage ? ` ${dailyAverage} ` : ""} 
+        ${data.showDailyAverage && data.showAverageTime ? `in` : ""}
+        ${
+          data.showAverageTime
+            ? ` ${Math.round(data.timeSpent / (data.countDays * 60))}m `
+            : ""
+        }
+      
+        ${
+          data.showTimePerTweet
+            ? ` going ${(data.postCount / (data.timeSpent / (60 * 60))).toFixed(
+                1
+              )} r/h`
+            : ""
+        } 
       `;
     }
   );
@@ -218,6 +236,7 @@ function checkDateChange() {
         currentDay: today,
         todayCount: 0,
         countDays: data.countDays + 1,
+        timeSpentToday: 0,
       });
     }
   });
@@ -247,11 +266,19 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   updateStatsUI();
 });
 
-// update user id on storage change
-// chrome.storage.onChanged.addListener((changes, namespace) => {
-//   if (changes.userId) {
-//     userId = changes.userId.newValue;
-//   }
-// });
+// a timer of the time that the user is spending on the website
+
+setInterval(() => {
+  chrome.storage.sync.get(["timeSpent", "timeSpentToday"], (data) => {
+    let timeSpent = data.timeSpent || 0;
+    let timeSpentToday = data.timeSpentToday || 0;
+    timeSpent += 1;
+    timeSpentToday += 1;
+    chrome.storage.sync.set({
+      timeSpent: timeSpent,
+      timeSpentToday: timeSpentToday,
+    });
+  });
+}, 1000);
 
 init();
