@@ -17,7 +17,7 @@
     {
       "matches": ["https://twitter.com/*"],
       "runAt": "document_end",
-      "js": ["content.js"]
+      "js": ["tracker.js", "filter.js"]
     }
   ],
   "action": {

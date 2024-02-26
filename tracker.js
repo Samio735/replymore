@@ -103,7 +103,7 @@ function createProgressBar() {
 }
 
 function updateStatsElement() {
-  chrome.storage.sync.get(
+  chrome.storage.local.get(
     [
       "postCount",
       "countDays",
@@ -120,7 +120,6 @@ function updateStatsElement() {
       "timeSpentToday",
     ],
     (data) => {
-      console.log(data);
       const statsElement = document.getElementById("post-stats");
       if (data.postCount == undefined) data.postCount = 0;
       if (data.countDays == undefined) data.countDays = 1;
@@ -185,7 +184,7 @@ function updateStatsElement() {
   );
 }
 function updateProgressBar() {
-  chrome.storage.sync.get(["postCount", "todayCount", "dailyGoal"], (data) => {
+  chrome.storage.local.get(["postCount", "todayCount", "dailyGoal"], (data) => {
     if (!data.dailyGoal) {
       const progressBarContainer = document.getElementById(
         "post-progress-bar-container"
@@ -202,7 +201,6 @@ function updateProgressBar() {
     const progressBar = document.getElementById("post-progress-bar");
     let progress = (data.postCount / data.dailyGoal) * 100;
     if (progress > 100) progress = 100;
-    console.log(progress);
     progressBar.style.width = `${progress}%`;
   });
 }
@@ -216,12 +214,15 @@ document.addEventListener("click", function (event) {
   ) {
     // User clicked the tweet button to post
     playAudio();
-    chrome.storage.sync.get(["postCount", "todayCount"], (data) => {
+    chrome.storage.local.get(["postCount", "todayCount"], (data) => {
       postCount = data.postCount || 0;
       postCount++;
       todayCount = data.todayCount || 0;
       todayCount++;
-      chrome.storage.sync.set({ postCount: postCount, todayCount: todayCount });
+      chrome.storage.local.set({
+        postCount: postCount,
+        todayCount: todayCount,
+      });
       updateStatsUI();
     });
   }
@@ -229,10 +230,10 @@ document.addEventListener("click", function (event) {
 
 function checkDateChange() {
   const today = new Date().toLocaleDateString();
-  chrome.storage.sync.get(["currentDay", "countDays"], (data) => {
+  chrome.storage.local.get(["currentDay", "countDays"], (data) => {
     (!data.countDays || data.countDays == 0) && (data.countDays = 1);
     if (data.currentDay !== today) {
-      chrome.storage.sync.set({
+      chrome.storage.local.set({
         currentDay: today,
         todayCount: 0,
         countDays: data.countDays + 1,
@@ -269,12 +270,12 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 // a timer of the time that the user is spending on the website
 
 setInterval(() => {
-  chrome.storage.sync.get(["timeSpent", "timeSpentToday"], (data) => {
+  chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
     let timeSpent = data.timeSpent || 0;
     let timeSpentToday = data.timeSpentToday || 0;
     timeSpent += 1;
     timeSpentToday += 1;
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       timeSpent: timeSpent,
       timeSpentToday: timeSpentToday,
     });

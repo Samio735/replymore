@@ -16,47 +16,47 @@ const showTimePerTweetEl = document.getElementById("show-time-per-tweet");
 const showTodayRateEl = document.getElementById("show-today-rate");
 
 ResetBtn.addEventListener("click", () => {
-  chrome.storage.sync.set({ todayCount: 0, postCount: 0, countDays: 1 });
+  chrome.storage.local.set({ todayCount: 0, postCount: 0, countDays: 1 });
 });
 
 // add event listenes to each show button
 
 showTodayCountEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showTodayCount: e.target.checked });
+  chrome.storage.local.set({ showTodayCount: e.target.checked });
 });
 
 showOverallCountEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showOverallCount: e.target.checked });
+  chrome.storage.local.set({ showOverallCount: e.target.checked });
 });
 
 showDailyAverageEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showDailyAverage: e.target.checked });
+  chrome.storage.local.set({ showDailyAverage: e.target.checked });
 });
 
 showTodayTimeEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showTodayTime: e.target.checked });
+  chrome.storage.local.set({ showTodayTime: e.target.checked });
 });
 
 showAverageTimeEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showAverageTime: e.target.checked });
+  chrome.storage.local.set({ showAverageTime: e.target.checked });
   console.log("hello");
 });
 
 showTimePerTweetEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showTimePerTweet: e.target.checked });
+  chrome.storage.local.set({ showTimePerTweet: e.target.checked });
 });
 
 showTodayRateEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({ showTodayRate: e.target.checked });
+  chrome.storage.local.set({ showTodayRate: e.target.checked });
 });
 
 dailyGoalEl.addEventListener("change", (e) => {
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     dailyGoal: Number(e.target.value),
   });
 });
 
-chrome.storage.sync.get(
+chrome.storage.local.get(
   [
     "dailyGoal",
     "countDays",

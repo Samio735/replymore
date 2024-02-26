@@ -1,5 +1,5 @@
 function init() {
-  chrome.storage.sync.get(
+  chrome.storage.local.get(
     [
       "postCount",
       "countDays",
@@ -29,7 +29,7 @@ function init() {
       if (data.showAverageTime === undefined) data.showAverageTime = false;
       if (data.showTimePerTweet === undefined) data.showTimePerTweet = false;
       if (data.showTodayRate === undefined) data.showTodayRate = true;
-      chrome.storage.sync.set({
+      chrome.storage.local.set({
         postCount: data.postCount,
         countDays: data.countDays,
         todayCount: data.todayCount,
