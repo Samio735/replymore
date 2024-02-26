@@ -1,5 +1,7 @@
 const ResetBtn = document.getElementById("reset");
 const dailyGoalEl = document.getElementById("daily-goal");
+const maxTimeEl = document.getElementById("max-time");
+const minReachEl = document.getElementById("min-reach");
 const todayCountEl = document.getElementById("today-count");
 const overallCountEl = document.getElementById("overall-count");
 const dailyAverageEl = document.getElementById("daily-average");
@@ -56,6 +58,20 @@ dailyGoalEl.addEventListener("change", (e) => {
   });
 });
 
+maxTimeEl.addEventListener("change", (e) => {
+  if (!e.target.value) e.target.value = Infinity;
+  if (e.target.value < 0) e.target.value = Infinity;
+  chrome.storage.local.set({
+    maxTimePassed: Number(e.target.value),
+  });
+});
+
+minReachEl.addEventListener("change", (e) => {
+  chrome.storage.local.set({
+    minViewsPerMinute: Number(e.target.value),
+  });
+});
+
 chrome.storage.local.get(
   [
     "dailyGoal",
@@ -71,6 +87,8 @@ chrome.storage.local.get(
     "showAverageTime",
     "showTimePerTweet",
     "showTodayRate",
+    "maxTimePassed",
+    "minViewsPerMinute",
   ],
   (data) => {
     const dailyGoal = data.dailyGoal || 0;
@@ -86,8 +104,12 @@ chrome.storage.local.get(
     const showAverageTime = !!data.showAverageTime ? "true" : "false";
     const showTimePerTweet = !!data.showTimePerTweet ? "true" : "false";
     const showTodayRate = !!data.showTodayRate ? "true" : "false";
+    const maxTimePassed = data.maxTimePassed || Infinity;
+    const minViewsPerMinute = data.minViewsPerMinute || 0;
 
     dailyGoalEl.value = dailyGoal;
+    maxTimeEl.value = maxTimePassed;
+    minReachEl.value = minViewsPerMinute;
     todayCountEl.textContent = todayCount;
     overallCountEl.textContent = postCount;
     dailyAverageEl.textContent = (postCount / countDays).toFixed(1);
@@ -107,3 +129,121 @@ chrome.storage.local.get(
     showTodayRateEl.checked = showTodayRate === "true";
   }
 );
+
+// <div style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center;">
+// <h2 style="margin-right: 6px; text-wrap: nowrap;"> Daily Goal : </h2>
+// <div           style="
+//       height: 100%;
+//       display: flex;
+//       gap: 0.2rem;
+//       background-color: aliceblue;
+//       color: #1775b5;
+//       border: 0.1rem solid;
+//       border-color: aliceblue;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+//       align-items: center;
+//     ">
+//   <input
+//     type="number"
+//     id="daily-goal"
+//     placeholder="0"
+//     style="
+//       height: 100%;
+//       width: 3rem;
+//       background-color: #1775b5;
+//       color: aliceblue;
+//       border: 0;
+//       padding: 2px 4px;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+
+//     "
+//   />
+//           <!-- <button
+//     id="save"
+
+//   >
+//     Save
+//   </button> -->
+//   <p style="padding-right: 0.2rem;text-wrap: nowrap;"> per day</p>
+//   </div>
+// </div>
+//       <div style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center;">
+// <h2 style="margin-right: 6px; text-wrap: nowrap;"> Max post age : </h2>
+// <div           style="
+//       height: 100%;
+//       display: flex;
+//       gap: 0.2rem;
+//       background-color: aliceblue;
+//       color: #1775b5;
+//       border: 0.1rem solid;
+//       border-color: aliceblue;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+//       align-items: center;
+//     ">
+//   <input
+//     type="number"
+//     id="max-time"
+//     placeholder="0"
+//     style="
+//       height: 100%;
+//       width: 3rem;
+//       background-color: #1775b5;
+//       color: aliceblue;
+//       border: 0;
+//       padding: 2px 4px;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+
+//     "
+//   />
+//           <!-- <button
+//     id="save"
+
+//   >
+//     Save
+//   </button> -->
+//   <p style="padding-right: 0.2rem;text-wrap: nowrap;"> hours</p>
+//   </div>
+// </div>
+//       <div style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center;">
+// <h2 style="margin-right: 6px; text-wrap: nowrap;"> Min reach : </h2>
+// <div           style="
+//       height: 100%;
+//       display: flex;
+//       gap: 0.2rem;
+//       background-color: aliceblue;
+//       color: #1775b5;
+//       border: 0.1rem solid;
+//       border-color: aliceblue;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+//       align-items: center;
+//     ">
+//   <input
+//     type="number"
+//     id="min-reach"
+//     placeholder="0"
+//     style="
+//       height: 100%;
+//       width: 3rem;
+//       background-color: #1775b5;
+//       color: aliceblue;
+//       border: 0;
+//       padding: 2px 4px;
+//       border-radius: 8px;
+//       transition: all 0.3s ease-in-out;
+
+//     "
+//   />
+//           <!-- <button
+//     id="save"
+
+//   >
+//     Save
+//   </button> -->
+//   <p style="padding-right: 0.2rem;text-wrap: nowrap;"> view / min</p>
+//   </div>
+// </div>
