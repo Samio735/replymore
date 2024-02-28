@@ -3,18 +3,21 @@ function filerPosts() {
 
   const url = window.location.href;
   chrome.storage.local.get(
-    ["minViewsPerMinute", "maxTimePassed", "hideLikedPosts"],
+    ["minViewsPerMinute", "maxTimePassed", "hideLikedPosts", "maxReplyCount"],
     (data) => {
       const minViewsPerMinute = data.minViewsPerMinute || 0;
       const maxTimePassed = data.maxTimePassed || Infinity;
       const hideLikedPosts = data.hideLikedPosts || false;
+      const maxReplyCount = data.maxReplyCount || Infinity;
       console.log(
         "minViewsPerMinute",
         minViewsPerMinute,
         "maxTimePassed",
         maxTimePassed,
         "hideLikedPosts",
-        hideLikedPosts
+        hideLikedPosts,
+        "maxReplyCount",
+        maxReplyCount
       );
       const posts = document.querySelectorAll("article");
       posts.forEach((post) => {
@@ -86,7 +89,10 @@ function filerPosts() {
         ) {
           if (viewsPerMinute < minViewsPerMinute) {
             post.remove();
-          } else if (timePassedInMinutes / 60 > maxTimePassed) {
+          } else if (
+            timePassedInMinutes / 60 > maxTimePassed ||
+            replies > maxReplyCount
+          ) {
             if (url.includes("https://twitter.com/home")) {
               post.remove();
             }
