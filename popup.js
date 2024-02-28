@@ -115,7 +115,9 @@ chrome.storage.local.get(
     dailyAverageEl.textContent = (postCount / countDays).toFixed(1);
     todayTimeEl.textContent = Math.round(timeSpentToday / 60);
     averageTimeEl.textContent = Math.round(timeSpent / 60 / countDays);
-    timePerTweetEl.textContent = (timeSpent / postCount).toFixed(1);
+    timePerTweetEl.textContent = (postCount / (timeSpent / (60 * 60))).toFixed(
+      1
+    );
     todayRateEl.textContent = (
       data.todayCount /
       (data.timeSpentToday / (60 * 60))
