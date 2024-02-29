@@ -3,7 +3,13 @@ function filerPosts() {
 
   const url = window.location.href;
   chrome.storage.local.get(
-    ["minViewsPerMinute", "maxTimePassed", "hideLikedPosts", "maxReplyCount"],
+    [
+      "minViewsPerMinute",
+      "maxTimePassed",
+      "hideLikedPosts",
+      "maxReplyCount",
+      "hideLikedPosts",
+    ],
     (data) => {
       const minViewsPerMinute = data.minViewsPerMinute || 0;
       const maxTimePassed = data.maxTimePassed || Infinity;
@@ -17,7 +23,9 @@ function filerPosts() {
         "hideLikedPosts",
         hideLikedPosts,
         "maxReplyCount",
-        maxReplyCount
+        maxReplyCount,
+        "hideLikedPosts",
+        hideLikedPosts
       );
       const posts = document.querySelectorAll("article");
       posts.forEach((post) => {
@@ -37,25 +45,24 @@ function filerPosts() {
             likes = parseInt(stat);
           } else if (stat.includes("retweet") || stat.includes("retweet")) {
             retweets = parseInt(stat);
-            //   } else if (stat.includes("Quote Tweet")) {
-            //     quoteTweets = parseInt(stat);
           } else if (stat.includes("reply") || stat.includes("replies")) {
             replies = parseInt(stat);
           } else if (stat.includes("views") || stat.includes("view")) {
             views = parseInt(stat);
-          } else if (stat.includes("liked")) {
+          } else if (stat.includes("Liked")) {
             liked = true;
           }
         });
-
+        console.log("likes", likes, "retweets", retweets, "replies", replies);
         // hide liked posts on lists and communities
-        // if (
-        //   (url.includes("https://twitter.com/i/lists") ||
-        //     url.includes("https://twitter.com/i/communities")) &&
-        //   liked
-        // ) {
-        //   post.remove();
-        // }
+        if (
+          (url.includes("https://twitter.com/i/lists") ||
+            url.includes("https://twitter.com/i/communities") ||
+            url.includes("https://twitter.com/home")) &&
+          liked
+        ) {
+          post.remove();
+        }
 
         const timeEl = post.querySelector("time");
         if (!timeEl) return;

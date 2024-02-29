@@ -198,6 +198,10 @@ function checkDateChange() {
   });
 }
 
+setInterval(() => {
+  checkDateChange();
+}, 1000 * 60 * 60);
+
 function init() {
   checkDateChange();
   createContainer();

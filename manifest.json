@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ReplyMore",
-  "description": "Tweets and replies tracker to motivate you to engage more",
+  "description": "Replies tracker to motivate you to engage more",
   "version": "0.1.3",
   "permissions": ["storage"],
   "background": {
