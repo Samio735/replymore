@@ -154,7 +154,7 @@ function updateProgressBar() {
 
     progressBarContainer.style.display = "block";
     const progressBar = document.getElementById("post-progress-bar");
-    let progress = (data.postCount / data.dailyGoal) * 100;
+    let progress = (data.todayCount / data.dailyGoal) * 100;
     if (progress > 100) progress = 100;
     progressBar.style.width = `${progress}%`;
   });

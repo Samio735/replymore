@@ -58,6 +58,7 @@ function filerPosts() {
         // }
 
         const timeEl = post.querySelector("time");
+        if (!timeEl) return;
         const time = timeEl?.getAttribute("datetime") || "";
         const timePassed = getTimePassed(time);
         const timePassedInMinutes = timePassed / 1000 / 60;
@@ -72,11 +73,18 @@ function filerPosts() {
           " BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;";
         vewsPerMinuteEl.style.position = "absolute";
         vewsPerMinuteEl.style.top = "0";
-        vewsPerMinuteEl.style.right = "0";
-        vewsPerMinuteEl.style.backgroundColor = "red";
+        vewsPerMinuteEl.style.right = "4rem";
+        vewsPerMinuteEl.style.backgroundColor = "blue";
+        if (viewsPerMinute > 20)
+          vewsPerMinuteEl.style.backgroundColor = "green";
+        if (viewsPerMinute > 40) vewsPerMinuteEl.style.backgroundColor = "gold";
+        if (viewsPerMinute > 60)
+          vewsPerMinuteEl.style.backgroundColor = "orange";
+        if (viewsPerMinute > 100) vewsPerMinuteEl.style.backgroundColor = "red";
         vewsPerMinuteEl.style.color = "white";
         vewsPerMinuteEl.style.padding = "5px";
         vewsPerMinuteEl.style.borderBottomLeftRadius = "10px";
+        vewsPerMinuteEl.style.borderBottomRightRadius = "10px";
         vewsPerMinuteEl.style.fontFamily = "Arial, sans-serif";
         vewsPerMinuteEl.style.fontWeight = "bold";
         if (viewsPerMinute) post.appendChild(vewsPerMinuteEl);
