@@ -1,5 +1,8 @@
 const ResetBtn = document.getElementById("reset");
 const dailyGoalEl = document.getElementById("daily-goal");
+const activateFilterPostsEl = document.getElementById("activate-filter-posts");
+const postFilterEls = document.querySelectorAll(".post-filter");
+const postFilterContainerEl = document.querySelector(".post-filter-container");
 const maxTimeEl = document.getElementById("max-time");
 const minReachEl = document.getElementById("min-reach");
 const maxReplisEl = document.getElementById("max-replies");
@@ -62,6 +65,18 @@ dailyGoalEl.addEventListener("change", (e) => {
   });
 });
 
+activateFilterPostsEl.addEventListener("change", (e) => {
+  chrome.storage.local.set({
+    activateFilterPosts: e.target.checked,
+  });
+  postFilterEls.forEach((el) => {
+    el.style.display = e.target.checked ? "flex" : "none";
+  });
+  postFilterContainerEl.style.border = e.target.checked
+    ? "solid 0.1rem aliceblue"
+    : "none";
+});
+
 maxTimeEl.addEventListener("change", (e) => {
   if (!e.target.value) e.target.value = Infinity;
   if (e.target.value < 0) e.target.value = Infinity;
@@ -121,6 +136,7 @@ chrome.storage.local.get(
     "hideLikedPosts",
     "hideViewsPerMinute",
     "disaibleReplySound",
+    "activateFilterPosts",
   ],
   (data) => {
     const dailyGoal = data.dailyGoal || 0;
@@ -142,6 +158,7 @@ chrome.storage.local.get(
     const hideLikedPosts = !!data.hideLikedPosts ? "true" : "false";
     const hideViewsPerMinute = !!data.hideViewsPerMinute ? "true" : "false";
     const disaibleReplySound = !!data.disaibleReplySound ? "true" : "false";
+    const activateFilterPosts = !!data.activateFilterPosts ? "true" : "false";
 
     dailyGoalEl.value = dailyGoal;
     maxTimeEl.value = maxTimePassed;
@@ -169,5 +186,12 @@ chrome.storage.local.get(
     hideLikedPostsEl.checked = hideLikedPosts === "true";
     hideViewsPerMinuteEl.checked = hideViewsPerMinute === "true";
     disaibleReplySoundEl.checked = disaibleReplySound === "true";
+    activateFilterPostsEl.checked = activateFilterPosts === "true";
+    postFilterEls.forEach((el) => {
+      el.style.display = activateFilterPostsEl.checked ? "flex" : "none";
+    });
+    postFilterContainerEl.style.border = activateFilterPostsEl.checked
+      ? "solid 0.1rem aliceblue"
+      : "none";
   }
 );

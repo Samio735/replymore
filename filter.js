@@ -10,6 +10,7 @@ function filerPosts() {
       "maxReplyCount",
       "hideLikedPosts",
       "hideViewsPerMinute",
+      "activateFilterPosts",
     ],
     (data) => {
       const minViewsPerMinute = data.minViewsPerMinute || 0;
@@ -29,7 +30,9 @@ function filerPosts() {
         "hideLikedPosts",
         hideLikedPosts,
         "hideViewsPerMinute",
-        hideViewsPerMinute
+        hideViewsPerMinute,
+        "activateFilterPosts",
+        data.activateFilterPosts
       );
       const posts = document.querySelectorAll("article");
       posts.forEach((post) => {
@@ -99,6 +102,7 @@ function filerPosts() {
           vewsPerMinuteEl.style.fontWeight = "bold";
           if (viewsPerMinute) post.appendChild(vewsPerMinuteEl);
         }
+        if (!data.activateFilterPosts) return;
         if (
           url.includes("https://twitter.com/home") ||
           url.includes("https://twitter.com/explore") ||

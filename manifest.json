@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ReplyMore",
   "description": "Replies tracker to motivate you to engage more",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
