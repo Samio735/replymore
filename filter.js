@@ -135,5 +135,12 @@ function getTimePassed(time) {
   const timePassed = currentTime - postTime;
   return timePassed;
 }
+function init() {
+  chrome.storage.local.get(["paid", "trial"], (data) => {
+    if (!data.paid && !data.trial) return;
 
-setTimeout(setInterval(filerPosts, 500), 2000);
+    setTimeout(setInterval(filerPosts, 500), 2000);
+  });
+}
+
+init();

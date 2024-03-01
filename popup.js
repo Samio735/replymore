@@ -25,6 +25,10 @@ const showTimePerTweetEl = document.getElementById("show-time-per-tweet");
 const showTodayRateEl = document.getElementById("show-today-rate");
 const trackContainerEl = document.querySelector(".track-container");
 const filterContainerEl = document.querySelector(".filter-container");
+const containerEl = document.querySelector(".container");
+const freetrialBtn = document.getElementById("free-trial");
+const payBtn = document.getElementById("pay");
+const notPayedEl = document.querySelector(".not-payed");
 
 ResetBtn.addEventListener("click", () => {
   chrome.storage.local.set({
@@ -132,7 +136,13 @@ document.addEventListener("click", (e) => {
   }
 });
 
-switchToTrack();
+freetrialBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ type: "start-free-trial" });
+});
+
+payBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ type: "pay" });
+});
 
 function switchToTrack() {
   trackContainerEl.style.display = "block";
@@ -225,4 +235,26 @@ function updateUI() {
   );
 }
 
-updateUI();
+function init() {
+  chrome.storage.local.get(["paid", "trial", "trialStarted"], (data) => {
+    console.log(data.paid, data.trial);
+    if (!data.paid && !data.trial) {
+      containerEl.style.display = "none";
+    }
+    if (data.paid) {
+      freetrialBtn.style.display = "none";
+      notPayedEl.style.display = "none";
+    }
+    if (data.trialStarted && !data.paid) {
+      const p = document.createElement("p");
+      p.textContent = "Your free trial has started";
+      p.style.textAlign = "center";
+      notPayedEl.prepend(p);
+      freetrialBtn.style.display = "none";
+    }
+    switchToTrack();
+    updateUI();
+  });
+}
+
+init();
