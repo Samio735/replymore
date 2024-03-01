@@ -9,12 +9,14 @@ function filerPosts() {
       "hideLikedPosts",
       "maxReplyCount",
       "hideLikedPosts",
+      "hideViewsPerMinute",
     ],
     (data) => {
       const minViewsPerMinute = data.minViewsPerMinute || 0;
       const maxTimePassed = data.maxTimePassed || Infinity;
       const hideLikedPosts = data.hideLikedPosts || false;
       const maxReplyCount = data.maxReplyCount || Infinity;
+      const hideViewsPerMinute = data.hideViewsPerMinute || false;
       console.log(
         "minViewsPerMinute",
         minViewsPerMinute,
@@ -25,7 +27,9 @@ function filerPosts() {
         "maxReplyCount",
         maxReplyCount,
         "hideLikedPosts",
-        hideLikedPosts
+        hideLikedPosts,
+        "hideViewsPerMinute",
+        hideViewsPerMinute
       );
       const posts = document.querySelectorAll("article");
       posts.forEach((post) => {
@@ -72,30 +76,29 @@ function filerPosts() {
 
         const viewsPerMinute = Math.round(views / timePassedInMinutes);
         post.style.position = "relative";
-        const vewsPerMinuteEl = document.createElement("div");
-        vewsPerMinuteEl.id = "views-per-minute";
-        vewsPerMinuteEl.innerHTML = viewsPerMinute + " views / min";
-        vewsPerMinuteEl.classList.add("views-per-minute");
-        vewsPerMinuteEl.style.fontFamily =
-          " BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;";
-        vewsPerMinuteEl.style.position = "absolute";
-        vewsPerMinuteEl.style.top = "0";
-        vewsPerMinuteEl.style.right = "4rem";
-        vewsPerMinuteEl.style.backgroundColor = "blue";
-        if (viewsPerMinute > 20)
-          vewsPerMinuteEl.style.backgroundColor = "green";
-        if (viewsPerMinute > 40) vewsPerMinuteEl.style.backgroundColor = "gold";
-        if (viewsPerMinute > 60)
-          vewsPerMinuteEl.style.backgroundColor = "orange";
-        if (viewsPerMinute > 100) vewsPerMinuteEl.style.backgroundColor = "red";
-        vewsPerMinuteEl.style.color = "white";
-        vewsPerMinuteEl.style.padding = "5px";
-        vewsPerMinuteEl.style.borderBottomLeftRadius = "10px";
-        vewsPerMinuteEl.style.borderBottomRightRadius = "10px";
-        vewsPerMinuteEl.style.fontFamily = "Arial, sans-serif";
-        vewsPerMinuteEl.style.fontWeight = "bold";
-        if (viewsPerMinute) post.appendChild(vewsPerMinuteEl);
-
+        if (!hideViewsPerMinute) {
+          const vewsPerMinuteEl = document.createElement("div");
+          vewsPerMinuteEl.id = "views-per-minute";
+          vewsPerMinuteEl.innerHTML = viewsPerMinute + " views / min";
+          vewsPerMinuteEl.classList.add("views-per-minute");
+          vewsPerMinuteEl.style.fontFamily =
+            " BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;";
+          vewsPerMinuteEl.style.position = "absolute";
+          vewsPerMinuteEl.style.top = "0";
+          vewsPerMinuteEl.style.right = "4rem";
+          vewsPerMinuteEl.style.color = "blue";
+          if (viewsPerMinute > 20) vewsPerMinuteEl.style.color = "green";
+          if (viewsPerMinute > 40) vewsPerMinuteEl.style.color = "gold";
+          if (viewsPerMinute > 60) vewsPerMinuteEl.style.color = "orange";
+          if (viewsPerMinute > 100) vewsPerMinuteEl.style.color = "red";
+          // vewsPerMinuteEl.style.color = "white";
+          vewsPerMinuteEl.style.padding = "5px";
+          vewsPerMinuteEl.style.borderBottomLeftRadius = "10px";
+          vewsPerMinuteEl.style.borderBottomRightRadius = "10px";
+          vewsPerMinuteEl.style.fontFamily = "Arial, sans-serif";
+          vewsPerMinuteEl.style.fontWeight = "bold";
+          if (viewsPerMinute) post.appendChild(vewsPerMinuteEl);
+        }
         if (
           url.includes("https://twitter.com/home") ||
           url.includes("https://twitter.com/explore") ||

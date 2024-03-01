@@ -4,6 +4,7 @@ const maxTimeEl = document.getElementById("max-time");
 const minReachEl = document.getElementById("min-reach");
 const maxReplisEl = document.getElementById("max-replies");
 const hideLikedPostsEl = document.getElementById("hide-liked");
+const hideViewsPerMinuteEl = document.getElementById("hide-views-per-min");
 const todayCountEl = document.getElementById("today-count");
 const overallCountEl = document.getElementById("overall-count");
 const dailyAverageEl = document.getElementById("daily-average");
@@ -86,6 +87,12 @@ hideLikedPostsEl.addEventListener("change", (e) => {
   });
 });
 
+hideViewsPerMinuteEl.addEventListener("change", (e) => {
+  chrome.storage.local.set({
+    hideViewsPerMinute: e.target.checked,
+  });
+});
+
 chrome.storage.local.get(
   [
     "dailyGoal",
@@ -105,6 +112,7 @@ chrome.storage.local.get(
     "minViewsPerMinute",
     "maxReplyCount",
     "hideLikedPosts",
+    "hideViewsPerMinute",
   ],
   (data) => {
     const dailyGoal = data.dailyGoal || 0;
@@ -124,6 +132,7 @@ chrome.storage.local.get(
     const minViewsPerMinute = data.minViewsPerMinute || 0;
     const maxReplyCount = data.maxReplyCount || Infinity;
     const hideLikedPosts = !!data.hideLikedPosts ? "true" : "false";
+    const hideViewsPerMinute = !!data.hideViewsPerMinute ? "true" : "false";
 
     dailyGoalEl.value = dailyGoal;
     maxTimeEl.value = maxTimePassed;
@@ -149,5 +158,6 @@ chrome.storage.local.get(
     showTimePerTweetEl.checked = showTimePerTweet === "true";
     showTodayRateEl.checked = showTodayRate === "true";
     hideLikedPostsEl.checked = hideLikedPosts === "true";
+    hideViewsPerMinuteEl.checked = hideViewsPerMinute === "true";
   }
 );
