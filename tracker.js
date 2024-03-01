@@ -160,6 +160,20 @@ function updateProgressBar() {
   });
 }
 
+function reactToPost() {
+  playAudio();
+  chrome.storage.local.get(["postCount", "todayCount"], (data) => {
+    postCount = data.postCount || 0;
+    postCount++;
+    todayCount = data.todayCount || 0;
+    todayCount++;
+    chrome.storage.local.set({
+      postCount: postCount,
+      todayCount: todayCount,
+    });
+    updateStatsUI();
+  });
+}
 // Add event listener for detecting comment or post activity
 document.addEventListener("click", function (event) {
   if (
@@ -168,18 +182,23 @@ document.addEventListener("click", function (event) {
     event.target.closest('[data-testid="reply"]')
   ) {
     // User clicked the tweet button to post
-    playAudio();
-    chrome.storage.local.get(["postCount", "todayCount"], (data) => {
-      postCount = data.postCount || 0;
-      postCount++;
-      todayCount = data.todayCount || 0;
-      todayCount++;
-      chrome.storage.local.set({
-        postCount: postCount,
-        todayCount: todayCount,
-      });
-      updateStatsUI();
-    });
+    reactToPost();
+  }
+});
+
+// Add event listener for detecting comment or post activity by clicking cmd+enter
+
+document.addEventListener("keydown", function (event) {
+  if (
+    event.metaKey &&
+    event.key === "Enter" &&
+    event.target.closest("[role='textbox']")
+  ) {
+    // User clicked the tweet button to post
+    console.log(event.target);
+    console.log(event.target.value);
+
+    reactToPost();
   }
 });
 
