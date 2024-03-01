@@ -18,6 +18,11 @@
       "matches": ["https://twitter.com/*"],
       "runAt": "document_end",
       "js": ["tracker.js", "filter.js"]
+    },
+    {
+      "matches": ["https://extensionpay.com/*"],
+      "js": ["ExtPay.js"],
+      "run_at": "document_start"
     }
   ],
   "action": {

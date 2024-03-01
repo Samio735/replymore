@@ -161,46 +161,25 @@ function updateProgressBar() {
 }
 
 function reactToPost() {
-  playAudio();
-  chrome.storage.local.get(["postCount", "todayCount"], (data) => {
-    postCount = data.postCount || 0;
-    postCount++;
-    todayCount = data.todayCount || 0;
-    todayCount++;
-    chrome.storage.local.set({
-      postCount: postCount,
-      todayCount: todayCount,
-    });
-    updateStatsUI();
-  });
+  chrome.storage.local.get(
+    ["postCount", "todayCount", "disaibleReplySound"],
+    (data) => {
+      postCount = data.postCount || 0;
+      postCount++;
+      todayCount = data.todayCount || 0;
+      todayCount++;
+      chrome.storage.local.set({
+        postCount: postCount,
+        todayCount: todayCount,
+      });
+      updateStatsUI();
+      if (!data.disaibleReplySound) {
+        playAudio();
+      }
+    }
+  );
 }
 // Add event listener for detecting comment or post activity
-document.addEventListener("click", function (event) {
-  if (
-    event.target.closest('[data-testid="tweetButtonInline"]') ||
-    event.target.closest('[data-testid="tweetButton"]') ||
-    event.target.closest('[data-testid="reply"]')
-  ) {
-    // User clicked the tweet button to post
-    reactToPost();
-  }
-});
-
-// Add event listener for detecting comment or post activity by clicking cmd+enter
-
-document.addEventListener("keydown", function (event) {
-  if (
-    event.metaKey &&
-    event.key === "Enter" &&
-    event.target.closest("[role='textbox']")
-  ) {
-    // User clicked the tweet button to post
-    console.log(event.target);
-    console.log(event.target.value);
-
-    reactToPost();
-  }
-});
 
 function checkDateChange() {
   const today = new Date().toLocaleDateString();
@@ -217,20 +196,6 @@ function checkDateChange() {
   });
 }
 
-setInterval(() => {
-  checkDateChange();
-}, 1000 * 60);
-
-function init() {
-  checkDateChange();
-  createContainer();
-  createStatsElement();
-  createProgressBar();
-  updateStatsUI();
-}
-
-const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
-
 // Function to play the audio
 function playAudio() {
   audio.play();
@@ -241,23 +206,65 @@ function updateStatsUI() {
   updateStatsElement();
 }
 // update stats and post count on storage change
-chrome.storage.onChanged.addListener((changes, namespace) => {
+
+function init() {
+  const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
+
+  checkDateChange();
+  createContainer();
+  createStatsElement();
+  createProgressBar();
   updateStatsUI();
-});
 
-// a timer of the time that the user is spending on the website
-
-setInterval(() => {
-  chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
-    let timeSpent = data.timeSpent || 0;
-    let timeSpentToday = data.timeSpentToday || 0;
-    timeSpent += 1;
-    timeSpentToday += 1;
-    chrome.storage.local.set({
-      timeSpent: timeSpent,
-      timeSpentToday: timeSpentToday,
-    });
+  document.addEventListener("click", function (event) {
+    if (
+      event.target.closest('[data-testid="tweetButtonInline"]') ||
+      event.target.closest('[data-testid="tweetButton"]') ||
+      event.target.closest('[data-testid="reply"]')
+    ) {
+      // User clicked the tweet button to post
+      reactToPost();
+    }
   });
-}, 1000);
+
+  // Add event listener for detecting comment or post activity by clicking cmd+enter
+
+  document.addEventListener("keydown", function (event) {
+    if (
+      event.metaKey &&
+      event.key === "Enter" &&
+      event.target.closest("[role='textbox']")
+    ) {
+      // User clicked the tweet button to post
+      console.log(event.target);
+      console.log(event.target.value);
+
+      reactToPost();
+    }
+  });
+
+  setInterval(() => {
+    checkDateChange();
+  }, 1000 * 60);
+
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    updateStatsUI();
+  });
+
+  // a timer of the time that the user is spending on the website
+
+  setInterval(() => {
+    chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
+      let timeSpent = data.timeSpent || 0;
+      let timeSpentToday = data.timeSpentToday || 0;
+      timeSpent += 1;
+      timeSpentToday += 1;
+      chrome.storage.local.set({
+        timeSpent: timeSpent,
+        timeSpentToday: timeSpentToday,
+      });
+    });
+  }, 1000);
+}
 
 init();

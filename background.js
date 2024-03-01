@@ -49,3 +49,25 @@ function init() {
 }
 
 init();
+
+// background.js
+
+// importScripts("ExtPay.js");
+
+// var extpay = ExtPay("replymore");
+// extpay.startBackground(); // this line is required to use ExtPay in the rest of your extension
+
+// extpay.getUser().then((user) => {
+//   if (user.paid) {
+//     console.log(user);
+//     chrome.storage.local.set({ paid: true });
+//   } else {
+//     console.log(user);
+//     extpay.openPaymentPage();
+//     extpay.openTrialPage();
+//   }
+// });
+
+extpay.onPaid.addListener((user) => {
+  console.log("user paid!");
+});
