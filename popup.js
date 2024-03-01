@@ -23,9 +23,18 @@ const showTodayTimeEl = document.getElementById("show-today-time");
 const showAverageTimeEl = document.getElementById("show-average-time");
 const showTimePerTweetEl = document.getElementById("show-time-per-tweet");
 const showTodayRateEl = document.getElementById("show-today-rate");
+const trackContainerEl = document.querySelector(".track-container");
+const filterContainerEl = document.querySelector(".filter-container");
 
 ResetBtn.addEventListener("click", () => {
-  chrome.storage.local.set({ todayCount: 0, postCount: 0, countDays: 1 });
+  chrome.storage.local.set({
+    todayCount: 0,
+    postCount: 0,
+    countDays: 1,
+    timeSpent: 0,
+    timeSpentToday: 0,
+  });
+  updateUI();
 });
 
 // add event listenes to each show button
@@ -70,11 +79,8 @@ activateFilterPostsEl.addEventListener("change", (e) => {
     activateFilterPosts: e.target.checked,
   });
   postFilterEls.forEach((el) => {
-    el.style.display = e.target.checked ? "flex" : "none";
+    el.style.opacity = activateFilterPostsEl.checked ? "1" : "0.5";
   });
-  postFilterContainerEl.style.border = e.target.checked
-    ? "solid 0.1rem aliceblue"
-    : "none";
 });
 
 maxTimeEl.addEventListener("change", (e) => {
@@ -115,83 +121,108 @@ disaibleReplySoundEl.addEventListener("change", (e) => {
   });
 });
 
-chrome.storage.local.get(
-  [
-    "dailyGoal",
-    "countDays",
-    "todayCount",
-    "postCount",
-    "timeSpent",
-    "timeSpentToday",
-    "showTodayCount",
-    "showOverallCount",
-    "showDailyAverage",
-    "showTodayTime",
-    "showAverageTime",
-    "showTimePerTweet",
-    "showTodayRate",
-    "maxTimePassed",
-    "minViewsPerMinute",
-    "maxReplyCount",
-    "hideLikedPosts",
-    "hideViewsPerMinute",
-    "disaibleReplySound",
-    "activateFilterPosts",
-  ],
-  (data) => {
-    const dailyGoal = data.dailyGoal || 0;
-    const countDays = data.countDays || 1;
-    const todayCount = data.todayCount || 0;
-    const postCount = data.postCount || 0;
-    const timeSpent = data.timeSpent || 0;
-    const timeSpentToday = data.timeSpentToday || 0;
-    const showTodayCount = !!data.showTodayCount ? "true" : "false";
-    const showOverallCount = !!data.showOverallCount ? "true" : "false";
-    const showDailyAverage = !!data.showDailyAverage ? "true" : "false";
-    const showTodayTime = !!data.showTodayTime ? "true" : "false";
-    const showAverageTime = !!data.showAverageTime ? "true" : "false";
-    const showTimePerTweet = !!data.showTimePerTweet ? "true" : "false";
-    const showTodayRate = !!data.showTodayRate ? "true" : "false";
-    const maxTimePassed = data.maxTimePassed || Infinity;
-    const minViewsPerMinute = data.minViewsPerMinute || 0;
-    const maxReplyCount = data.maxReplyCount || Infinity;
-    const hideLikedPosts = !!data.hideLikedPosts ? "true" : "false";
-    const hideViewsPerMinute = !!data.hideViewsPerMinute ? "true" : "false";
-    const disaibleReplySound = !!data.disaibleReplySound ? "true" : "false";
-    const activateFilterPosts = !!data.activateFilterPosts ? "true" : "false";
-
-    dailyGoalEl.value = dailyGoal;
-    maxTimeEl.value = maxTimePassed;
-    minReachEl.value = minViewsPerMinute;
-    maxReplisEl.value = maxReplyCount;
-    todayCountEl.textContent = todayCount;
-    overallCountEl.textContent = postCount;
-    dailyAverageEl.textContent = (postCount / countDays).toFixed(1);
-    todayTimeEl.textContent = Math.round(timeSpentToday / 60);
-    averageTimeEl.textContent = Math.round(timeSpent / 60 / countDays);
-    timePerTweetEl.textContent = (postCount / (timeSpent / (60 * 60))).toFixed(
-      1
-    );
-    todayRateEl.textContent = (
-      data.todayCount /
-      (data.timeSpentToday / (60 * 60))
-    ).toFixed(1);
-    showTodayCountEl.checked = showTodayCount === "true";
-    showOverallCountEl.checked = showOverallCount === "true";
-    showDailyAverageEl.checked = showDailyAverage === "true";
-    showTodayTimeEl.checked = showTodayTime === "true";
-    showAverageTimeEl.checked = showAverageTime === "true";
-    showTimePerTweetEl.checked = showTimePerTweet === "true";
-    showTodayRateEl.checked = showTodayRate === "true";
-    hideLikedPostsEl.checked = hideLikedPosts === "true";
-    hideViewsPerMinuteEl.checked = hideViewsPerMinute === "true";
-    disaibleReplySoundEl.checked = disaibleReplySound === "true";
-    activateFilterPostsEl.checked = activateFilterPosts === "true";
-    postFilterEls.forEach((el) => {
-      el.style.display = activateFilterPostsEl.checked ? "flex" : "none";
-    });
-    postFilterContainerEl.style.border = activateFilterPostsEl.checked
-      ? "solid 0.1rem aliceblue"
-      : "none";
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".categories")) {
+    document.getElementById("filter").classList.toggle("focused");
+    document.getElementById("track").classList.toggle("focused");
+    // check which button is focused
+    const focused = document.activeElement;
+    if (focused.id === "track") switchToTrack();
+    if (focused.id === "filter") switchToFilter();
   }
-);
+});
+
+switchToTrack();
+
+function switchToTrack() {
+  trackContainerEl.style.display = "block";
+  filterContainerEl.style.display = "none";
+}
+
+function switchToFilter() {
+  trackContainerEl.style.display = "none";
+  filterContainerEl.style.display = "block";
+}
+
+function updateUI() {
+  chrome.storage.local.get(
+    [
+      "dailyGoal",
+      "countDays",
+      "todayCount",
+      "postCount",
+      "timeSpent",
+      "timeSpentToday",
+      "showTodayCount",
+      "showOverallCount",
+      "showDailyAverage",
+      "showTodayTime",
+      "showAverageTime",
+      "showTimePerTweet",
+      "showTodayRate",
+      "maxTimePassed",
+      "minViewsPerMinute",
+      "maxReplyCount",
+      "hideLikedPosts",
+      "hideViewsPerMinute",
+      "disaibleReplySound",
+      "activateFilterPosts",
+    ],
+    (data) => {
+      const dailyGoal = data.dailyGoal || 0;
+      const countDays = data.countDays || 1;
+      const todayCount = data.todayCount || 0;
+      const postCount = data.postCount || 0;
+      const timeSpent = data.timeSpent || 0;
+      const timeSpentToday = data.timeSpentToday || 0;
+      const showTodayCount = !!data.showTodayCount ? "true" : "false";
+      const showOverallCount = !!data.showOverallCount ? "true" : "false";
+      const showDailyAverage = !!data.showDailyAverage ? "true" : "false";
+      const showTodayTime = !!data.showTodayTime ? "true" : "false";
+      const showAverageTime = !!data.showAverageTime ? "true" : "false";
+      const showTimePerTweet = !!data.showTimePerTweet ? "true" : "false";
+      const showTodayRate = !!data.showTodayRate ? "true" : "false";
+      const maxTimePassed = data.maxTimePassed || Infinity;
+      const minViewsPerMinute = data.minViewsPerMinute || 0;
+      const maxReplyCount = data.maxReplyCount || Infinity;
+      const hideLikedPosts = !!data.hideLikedPosts ? "true" : "false";
+      const hideViewsPerMinute = !!data.hideViewsPerMinute ? "true" : "false";
+      const disaibleReplySound = !!data.disaibleReplySound ? "true" : "false";
+      const activateFilterPosts = !!data.activateFilterPosts ? "true" : "false";
+
+      dailyGoalEl.value = dailyGoal;
+      maxTimeEl.value = maxTimePassed;
+      minReachEl.value = minViewsPerMinute;
+      maxReplisEl.value = maxReplyCount;
+      todayCountEl.textContent = todayCount;
+      overallCountEl.textContent = postCount;
+      dailyAverageEl.textContent = (postCount / countDays).toFixed(1);
+      todayTimeEl.textContent = Math.round(timeSpentToday / 60);
+      averageTimeEl.textContent = Math.round(timeSpent / 60 / countDays);
+      timePerTweetEl.textContent = (
+        postCount /
+        (timeSpent / (60 * 60))
+      ).toFixed(1);
+      todayRateEl.textContent = (
+        data.todayCount /
+        (data.timeSpentToday / (60 * 60))
+      ).toFixed(1);
+      showTodayCountEl.checked = showTodayCount === "true";
+      showOverallCountEl.checked = showOverallCount === "true";
+      showDailyAverageEl.checked = showDailyAverage === "true";
+      showTodayTimeEl.checked = showTodayTime === "true";
+      showAverageTimeEl.checked = showAverageTime === "true";
+      showTimePerTweetEl.checked = showTimePerTweet === "true";
+      showTodayRateEl.checked = showTodayRate === "true";
+      hideLikedPostsEl.checked = hideLikedPosts === "true";
+      hideViewsPerMinuteEl.checked = hideViewsPerMinute === "true";
+      disaibleReplySoundEl.checked = disaibleReplySound === "true";
+      activateFilterPostsEl.checked = activateFilterPosts === "true";
+      postFilterEls.forEach((el) => {
+        el.style.opacity = activateFilterPostsEl.checked ? "1" : "0.5";
+      });
+    }
+  );
+}
+
+updateUI();

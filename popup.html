@@ -32,21 +32,51 @@
       background-color: #084f7e;
       color: #f0f8ff;
     }
+
+    .toggle {
+
+            background-color: rgb(29, 155, 240);
+      color: #f0f8ff;
+      border: 0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: all 0.1s ease-in-out;
+    }
+    .toggle:hover {
+      background-color:  #c2d0db;
+    }
+    .toggle:active {
+      background-color: #084f7e;
+      color: #f0f8ff;
+    }
+    .toggle.focused  {
+      
+      color: rgb(29, 155, 240);
+      background-color: #f0f8ff;
+    }
     input::placeholder {
       color: rgba(240, 248, 255, 0.465);
     }
 
     </style>
     <div style="margin: 0 6px;">
-        <div style="width: 100%; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; ">
+        <div style="margin-bottom: 1rem ;width: 100%; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; ">
                              <span><svg viewBox="0 0 24 24"  style="color: rgb(255, 255, 255); fill: #ffffff;width: 30px;"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"></path></g></svg></span>
 
             <h2>
                   <span>ReplyMore</span>
                 </h2>
         </div>
-      <div style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h2 style="margin-right: 6px; text-wrap: nowrap;"> Daily Goal : </h2> 
+        <div class="container" style="width: 14rem;">
+          <div class="categories" style="border-radius: 20px; width: fit-content;  display: flex ;   overflow: hidden;      border: 0.1rem solid;
+            border-color: aliceblue;margin: 1rem auto;">
+          <button class="category toggle focused"  id="track" style="border-radius: 0;text-align: center;margin: 0 ;padding:  0.2rem 0.7rem;   
+  ">Track</button>
+          <button class="category toggle"  id="filter" style="border-radius: 0;text-align: center;margin: 0 ;padding:  0.2rem 0.7rem;  ; " >Filter</button>
+          </div>
+          <div class="track-container"  >
+      <div style="margin-bottom: 12px;margin-top: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
+      <h2 style="margin-right: 6px; text-wrap: nowrap;"> Daily goal </h2> 
       <div           style="
             height: 100%;
             display: flex;
@@ -84,12 +114,68 @@
         <p style="padding-right: 0.2rem;text-wrap: nowrap;"> per day</p>
         </div>
       </div>
-            <div     class="post-filter-container"      style="position:relative;border:  solid 0.1rem aliceblue;border-radius: 10px; padding: 2rem 1rem; padding-bottom: 1rem;margin: 1rem 0;margin-top: 2rem;">
-          <div style="position: absolute;top: -1rem ;left:-0.1rem; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between; background-color: rgb(29, 155, 240); padding: 0rem 0.5rem;padding-left: 0rem;">
-      <h2 style="margin-right: 6px; text-wrap: nowrap;"> Filter posts </h2> 
-                              <input type="checkbox" id="activate-filter-posts">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+<h2 style="margin-bottom: 0;">Stats</h2>
+<p style="margin-bottom: 0;">Shown</p>
+</div>
+      <div style="display: flex; flex-direction: column;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin: 0.2rem 0;">Today's count : <span id="today-count">0</span>  </p>
+                        <input type="checkbox" id="show-today-count">
+              </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin:0.2rem 0;"> Today's time : <span id="today-time">0</span> m </p>
+                        <input type="checkbox" id="show-today-time">
+              </div> 
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin:0.2rem 0;"> Today's rate : <span id="today-rate">0</span> r/h </p>
+                        <input type="checkbox" id="show-today-rate">
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 0.2rem 0;">Total count : <span id="overall-count">0</span>  </p>
+                <input type="checkbox" id="show-overall-count">
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin:0.2rem 0;"> Average count : <span id="daily-average">0</span>  </p>
+                        <input type="checkbox" id="show-daily-average">
+              </div>
 
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin:0.2rem 0;"> Average time : <span id="average-time">0</span> m </p>
+                        <input type="checkbox" id="show-average-time">
+              </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="margin:0.2rem 0;"> Average rate : <span id="time-per-tweet">0</span> r/h  </p>
+                        <input type="checkbox" id="show-time-per-tweet">
+              </div>
+
+     
+    </div>
+        <div
+        id="status"
+        style="
+          margin-top: 6px;
+          width: 100%;
+          display: flex;
+          gap: 8px;
+          
+          align-items: center;
+          justify-content: end;
+
+        "
+      >
+
+
+
+
+        <button id="reset" style="height: fit-content;">Reset stats</button>
+ 
       </div>
+      </div>
+      <div class="filter-container" style="display: none;" >
+      <h2  style="margin-bottom: 0.25rem;"> Filter posts  <span>  <input type="checkbox" id="activate-filter-posts"></span>  </h2> 
+                          
+
             <div class="post-filter" style=" margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
       <h3 style="margin-right: 6px; text-wrap: nowrap;"> Max post age : </h3> 
       <div           style="
@@ -207,80 +293,28 @@
         <p style="padding-right: 0.2rem;text-wrap: nowrap;"> replies</p>
         </div>
       </div>
-      </div>
-        <div style=" display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h3 style="margin-right: 6px; text-wrap: nowrap;"> hide liked posts </h3> 
+  <div>
+    <h2 style="margin-bottom: 0;">Settings</h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+      <p style="margin: 0.2rem 0;"> hide liked posts </p> 
                               <input type="checkbox" id="hide-liked">
 
       </div>
       
-       <div style=" display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h3 style="margin-right: 6px; text-wrap: nowrap;"> hide views/min </h3> 
+       <div style="display: flex; justify-content: space-between; align-items: center;">
+      <p style="margin: 0.2rem 0;"> hide views/min </p> 
                               <input type="checkbox" id="hide-views-per-min">
 
       </div>
-      <div style=" display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h3 style="margin-right: 6px; text-wrap: nowrap;"> disable reply sound </h3> 
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <p style="margin: 0.2rem 0;"> disable reply sound </p> 
                               <input type="checkbox" id="disable-reply-sound">
 
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-<h1 style="margin-bottom: 0;">Stats</h1>
-<p style="margin-bottom: 0;">Shown</p>
-</div>
-      <div style="display: flex; flex-direction: column;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin: 0.2rem 0;">Today's count : <span id="today-count">0</span>  </p>
-                        <input type="checkbox" id="show-today-count">
-              </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin:0.2rem 0;"> Today's time : <span id="today-time">0</span> m </p>
-                        <input type="checkbox" id="show-today-time">
-              </div> 
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin:0.2rem 0;"> Today's rate : <span id="today-rate">0</span> r/h </p>
-                        <input type="checkbox" id="show-today-rate">
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p style="margin: 0.2rem 0;">Total count : <span id="overall-count">0</span>  </p>
-                <input type="checkbox" id="show-overall-count">
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin:0.2rem 0;"> Average count : <span id="daily-average">0</span>  </p>
-                        <input type="checkbox" id="show-daily-average">
-              </div>
-
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin:0.2rem 0;"> Average time : <span id="average-time">0</span> m </p>
-                        <input type="checkbox" id="show-average-time">
-              </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p style="margin:0.2rem 0;"> Average rate : <span id="time-per-tweet">0</span> r/h  </p>
-                        <input type="checkbox" id="show-time-per-tweet">
-              </div>
-
-     
-    </div>
-        <div
-        id="status"
-        style="
-          margin-top: 6px;
-          width: 100%;
-          display: flex;
-          gap: 8px;
-          margin-bottom: 20px;
-          align-items: center;
-          justify-content: end;
-
-        "
-      >
-
-
-
-
-        <button id="reset" style="height: fit-content;">Reset stats</button>
- 
       </div>
+      </div>
+    
 
       <!-- <div style="width: 100%;">
       <h3> Features to come :</h3>
@@ -289,7 +323,7 @@
         <li>Better stats</li>
       </ul>
 </div> -->
-
+</div>
       <div
         id="status"
         style="
@@ -297,14 +331,14 @@
           width: 100%;
           display: flex;
           justify-content: center;
- 
+  margin-top: 20px;
         "
       >
         <a
           href="https://twitter.com/Samyrahim7"
           target="_blank"
           style="text-align: center; color: aliceblue"
-          >follow me on X</a
+          >Got feedback ?</a
         >
       </div>
     </div>
