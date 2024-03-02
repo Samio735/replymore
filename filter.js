@@ -66,7 +66,8 @@ function filerPosts() {
           (url.includes("https://twitter.com/i/lists") ||
             url.includes("https://twitter.com/i/communities") ||
             url.includes("https://twitter.com/home")) &&
-          liked
+          liked &&
+          hideLikedPosts
         ) {
           post.remove();
         }
