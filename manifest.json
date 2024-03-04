@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ReplyMore",
   "description": "Replies tracker to motivate you to engage more",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
@@ -15,7 +15,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://twitter.com/*", "https://pro.twitter.com"],
+      "matches": ["https://twitter.com/*", "https://pro.twitter.com/*"],
       "runAt": "document_end",
       "js": ["tracker.js", "filter.js"]
     },
