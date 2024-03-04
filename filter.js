@@ -1,6 +1,17 @@
-function filerPosts() {
+let filter = 5;
+let timout = true;
+function filterPosts() {
   // get page url
-
+  if (filter < 0) return;
+  if (!timout) return;
+  filter = filter - 1;
+  setTimeout(() => {
+    timout = true;
+  }, 50);
+  timout = false;
+  setTimeout(() => {
+    filter = 5;
+  }, 500);
   const url = window.location.href;
   chrome.storage.local.get(
     [
@@ -136,12 +147,15 @@ function getTimePassed(time) {
   const timePassed = currentTime - postTime;
   return timePassed;
 }
+
 function init() {
   chrome.storage.local.get(["paid", "trial"], (data) => {
     if (!data.paid && !data.trial) return;
-
-    setTimeout(setInterval(filerPosts, 500), 2000);
+    document.addEventListener("scroll", () => {
+      filterPosts();
+    });
   });
 }
-
-init();
+setTimeout(() => {
+  init();
+}, 1000);
