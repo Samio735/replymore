@@ -29,22 +29,22 @@ function filterPosts() {
       const hideLikedPosts = data.hideLikedPosts || false;
       const maxReplyCount = data.maxReplyCount || Infinity;
       const hideViewsPerMinute = data.hideViewsPerMinute || false;
-      console.log(
-        "minViewsPerMinute",
-        minViewsPerMinute,
-        "maxTimePassed",
-        maxTimePassed,
-        "hideLikedPosts",
-        hideLikedPosts,
-        "maxReplyCount",
-        maxReplyCount,
-        "hideLikedPosts",
-        hideLikedPosts,
-        "hideViewsPerMinute",
-        hideViewsPerMinute,
-        "activateFilterPosts",
-        data.activateFilterPosts
-      );
+      // console.log(
+      //   "minViewsPerMinute",
+      //   minViewsPerMinute,
+      //   "maxTimePassed",
+      //   maxTimePassed,
+      //   "hideLikedPosts",
+      //   hideLikedPosts,
+      //   "maxReplyCount",
+      //   maxReplyCount,
+      //   "hideLikedPosts",
+      //   hideLikedPosts,
+      //   "hideViewsPerMinute",
+      //   hideViewsPerMinute,
+      //   "activateFilterPosts",
+      //   data.activateFilterPosts
+      // );
       const posts = document.querySelectorAll("article");
       posts.forEach((post) => {
         if (post.querySelector("#views-per-minute")) return;
@@ -71,7 +71,7 @@ function filterPosts() {
             liked = true;
           }
         });
-        console.log("likes", likes, "retweets", retweets, "replies", replies);
+        // console.log("likes", likes, "retweets", retweets, "replies", replies);
         // hide liked posts on lists and communities
         if (
           (url.includes("https://twitter.com/i/lists") ||

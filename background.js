@@ -14,6 +14,7 @@ function init() {
       "showTodayRate",
       "timeSpent",
       "timeSpentToday",
+      "timeSpentEachDay",
     ],
     (data) => {
       if (data.dailyGoal === undefined) data.dailyGoal = 0;
@@ -29,6 +30,8 @@ function init() {
       if (data.showAverageTime === undefined) data.showAverageTime = false;
       if (data.showTimePerTweet === undefined) data.showTimePerTweet = false;
       if (data.showTodayRate === undefined) data.showTodayRate = true;
+      if (data.countEachDay === undefined) data.countEachDay = [];
+      console.log(data.countEachDay);
       chrome.storage.local.set({
         postCount: data.postCount,
         countDays: data.countDays,
@@ -101,3 +104,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     extpay.openPaymentPage();
   }
 });
+
+setInterval(() => {
+  chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
+    let timeSpent = data.timeSpent || 0;
+    let timeSpentToday = data.timeSpentToday || 0;
+    timeSpent += 1;
+    timeSpentToday += 1;
+    chrome.storage.local.set({
+      timeSpent: timeSpent,
+      timeSpentToday: timeSpentToday,
+    });
+  });
+  console.log("time spent today", timeSpentToday);
+}, 1000);

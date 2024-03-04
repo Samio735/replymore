@@ -183,17 +183,21 @@ function reactToPost() {
 
 function checkDateChange() {
   const today = new Date().toLocaleDateString();
-  chrome.storage.local.get(["currentDay", "countDays"], (data) => {
-    (!data.countDays || data.countDays == 0) && (data.countDays = 1);
-    if (data.currentDay !== today) {
-      chrome.storage.local.set({
-        currentDay: today,
-        todayCount: 0,
-        countDays: data.countDays + 1,
-        timeSpentToday: 0,
-      });
+  chrome.storage.local.get(
+    ["currentDay", "countDays", "todayCount", "countEachDay"],
+    (data) => {
+      (!data.countDays || data.countDays == 0) && (data.countDays = 1);
+      if (data.currentDay !== today) {
+        chrome.storage.local.set({
+          currentDay: today,
+          todayCount: 0,
+          countDays: data.countDays + 1,
+          timeSpentToday: 0,
+          countEachDay: data.countEachDay.push(data.todayCount),
+        });
+      }
     }
-  });
+  );
 }
 
 // Function to play the audio
@@ -255,20 +259,11 @@ function init() {
     });
 
     // a timer of the time that the user is spending on the website
-
-    setInterval(() => {
-      chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
-        let timeSpent = data.timeSpent || 0;
-        let timeSpentToday = data.timeSpentToday || 0;
-        timeSpent += 1;
-        timeSpentToday += 1;
-        chrome.storage.local.set({
-          timeSpent: timeSpent,
-          timeSpentToday: timeSpentToday,
-        });
-      });
-    }, 1000);
   });
 }
 
 init();
+
+chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
+  console.log(data);
+});
