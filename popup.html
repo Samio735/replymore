@@ -57,21 +57,35 @@
     input::placeholder {
       color: rgba(240, 248, 255, 0.465);
     }
+    .categoriy{
+      border: 0.1rem solid aliceblue;
+    }
+    .hidden{
+      display: none;
+    }
 
     </style>
-    <div style="margin: 0 6px;">
-        <div style="margin-bottom: 1rem ;width: 100%; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; ">
-                             <span><svg viewBox="0 0 24 24"  style="color: rgb(255, 255, 255); fill: #ffffff;width: 30px;"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"></path></g></svg></span>
+      <div class="logo" style="margin-bottom: 1rem ;width: 100%; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: space-between; ">
 
-            <h2>
-                  <span>ReplyMore</span>
-                </h2>
+            <div style="width:100% ;display: flex; align-items: center; gap: 6px; justify-content: center;" >
+                                           <div><svg viewBox="0 0 24 24"  style="color: rgb(255, 255, 255); fill: #ffffff;width: 30px;"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"></path></g></svg></div>
+
+                  <h2>ReplyMore</h2>
+                </div>
+                <div class="settings-icon" style="cursor: pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="fill: aliceblue;"  width="30"  viewBox="0 0 50 50">
+    <path d="M47.16,21.221l-5.91-0.966c-0.346-1.186-0.819-2.326-1.411-3.405l3.45-4.917c0.279-0.397,0.231-0.938-0.112-1.282 l-3.889-3.887c-0.347-0.346-0.893-0.391-1.291-0.104l-4.843,3.481c-1.089-0.602-2.239-1.08-3.432-1.427l-1.031-5.886 C28.607,2.35,28.192,2,27.706,2h-5.5c-0.49,0-0.908,0.355-0.987,0.839l-0.956,5.854c-1.2,0.345-2.352,0.818-3.437,1.412l-4.83-3.45 c-0.399-0.285-0.942-0.239-1.289,0.106L6.82,10.648c-0.343,0.343-0.391,0.883-0.112,1.28l3.399,4.863 c-0.605,1.095-1.087,2.254-1.438,3.46l-5.831,0.971c-0.482,0.08-0.836,0.498-0.836,0.986v5.5c0,0.485,0.348,0.9,0.825,0.985 l5.831,1.034c0.349,1.203,0.831,2.362,1.438,3.46l-3.441,4.813c-0.284,0.397-0.239,0.942,0.106,1.289l3.888,3.891 c0.343,0.343,0.884,0.391,1.281,0.112l4.87-3.411c1.093,0.601,2.248,1.078,3.445,1.424l0.976,5.861C21.3,47.647,21.717,48,22.206,48 h5.5c0.485,0,0.9-0.348,0.984-0.825l1.045-5.89c1.199-0.353,2.348-0.833,3.43-1.435l4.905,3.441 c0.398,0.281,0.938,0.232,1.282-0.111l3.888-3.891c0.346-0.347,0.391-0.894,0.104-1.292l-3.498-4.857 c0.593-1.08,1.064-2.222,1.407-3.408l5.918-1.039c0.479-0.084,0.827-0.5,0.827-0.985v-5.5C47.999,21.718,47.644,21.3,47.16,21.221z M25,32c-3.866,0-7-3.134-7-7c0-3.866,3.134-7,7-7s7,3.134,7,7C32,28.866,28.866,32,25,32z"></path>
+</svg>
+</div>
         </div>
+       
+    <div class="Settings hidden" style="margin: 0 6px;">
         
         <div class="container" style="width: 14rem;">
           <div class="categories" style="border-radius: 20px; width: fit-content;  display: flex ;   overflow: hidden;      border: 0.1rem solid;
             border-color: aliceblue;margin: 1rem auto;">
-          <button class="category toggle focused"  id="track" style="border-radius: 0;text-align: center;margin: 0 ;padding:  0.2rem 0.7rem;   
+         
+          <button class="category toggle focused "  id="track" style="border-radius: 0;text-align: center;margin: 0 ;padding:  0.2rem 0.7rem;   
   ">Track</button>
           <button class="category toggle"  id="filter" style="border-radius: 0;text-align: center;margin: 0 ;padding:  0.2rem 0.7rem;  ; " >Filter</button>
           </div>
@@ -346,6 +360,33 @@
           >Got feedback ?</a
         >
       </div>
+    </div>
+    <div class="leaderboard">
+        <div class="container" style="width: 14rem;">
+       <div class="categories" style=" width: fit-content;  display: flex ;   overflow: hidden;      
+            margin: 0.8rem auto; margin-top: 0; gap: 1rem;">
+         
+         <h3 class="top "  id="leaderboard" style=" height: fit-content;background-color: aliceblue;color: rgb(29, 155, 240);border: 0.1rem solid; border-radius: 20px;text-align: center;margin: 0 ;padding:  0.5rem 0.7rem;   
+  ">Daily Leaderboard</h3>
+          
+          
+</div>
+<div class="coming-soon" style="padding: 1rem 2rem;  display: flex; flex-direction: column; justify-content: center;">       <a href="https://twitter.com/Samyrahim7/status/1765176386350698790" style="color: aliceblue;">Coming soon.....</a>
+          <div class="leaderboard-container"  style="margin: 0 0px 20px 0px;" >
+      <!-- <div class="place first" style="display: flex; gap: 1rem; justify-content: space-between; align-items: center;">
+     
+      <div style="display: flex; gap: 0.2rem; align-items: center;">
+         <h2 style="margin-bottom: 0; margin-right: 1rem;">1st</h2>
+   <img src="https://pbs.twimg.com/profile_images/1440000000000/400x400" alt="profile" style="width: 30px; height: 30px; border-radius: 50%;"> 
+      <h4 style="margin-bottom: 0;">@user1</h4>
+   
+      </div>
+         <h3 style="margin-bottom: 0;">100</h3>
+        </div> -->
+   
+        
+    </div>
+    </div>
     </div>
     <script src="popup.js"></script>
   </body>

@@ -29,6 +29,14 @@ const containerEl = document.querySelector(".container");
 const freetrialBtn = document.getElementById("free-trial");
 const payBtn = document.getElementById("pay");
 const notPayedEl = document.querySelector(".not-payed");
+const leaderboardContainerEl = document.querySelector(".leaderboard");
+const settingsBtn = document.querySelector(".settings-icon");
+const settingsContainerEl = document.querySelector(".Settings");
+
+settingsBtn.addEventListener("click", () => {
+  settingsContainerEl.classList.toggle("hidden");
+  leaderboardContainerEl.classList.toggle("hidden");
+});
 
 ResetBtn.addEventListener("click", () => {
   chrome.storage.local.set({
@@ -254,6 +262,56 @@ function init() {
     }
     switchToTrack();
     updateUI();
+  });
+  // leaderboard();
+}
+
+const dummyData = [
+  { name: "@SamyRahim07", score: 114 },
+  { name: "@calebsylvest", score: 105 },
+  { name: "@FlavienNorindr", score: 101 },
+  { name: "@MiguelSarenas", score: 96 },
+  { name: "@arvidkahl", score: 85 },
+  { name: "@bandhiyahardik8", score: 84 },
+  { name: "@jp_alary", score: 79 },
+  { name: "@romaindewolff", score: 71 },
+  { name: "@joaoaguiam", score: 68 },
+  { name: "@Nichovski", score: 65 },
+];
+
+function leaderboard() {
+  leaderboardContainerEl.insertAdjacentHTML(
+    "beforeend",
+    `<div class="place first" style="opacity: 0.8 ;display: flex; gap: 1rem; justify-content: space-between; align-items: center; padding : 10px; ">
+      <div style="display: flex; gap: 0.2rem; align-items: center;">
+         <h4 style="margin: 0; margin-right: 1rem;">rank</h4>
+      <h4 style="margin: 0;">player</h4>
+   
+      </div>
+         <h4 style="margin: 0;">replies</h4>
+        </div>`
+  );
+  dummyData.forEach((data, i) => {
+    const color =
+      i === 0
+        ? "gold"
+        : i === 1
+        ? "aliceblue"
+        : i === 2
+        ? "DarkOrange"
+        : "aliceblue";
+    leaderboardContainerEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="place first" style="color: ${color}; display: flex; gap: 1rem; justify-content: space-between; align-items: center; border-top: 1px solid ${color}; padding : 10px; border-left: none; border-right: none;">
+     
+      <div style="display: flex; gap: 0.2rem; align-items: center;">
+         <h2 style="margin: 0; margin-right: 1rem;">#${i + 1}</h2>
+      <h4 style="margin: 0;">${data.name}</h4>
+   
+      </div>
+         <h3 style="margin: 0;">${data.score}</h3>
+        </div>`
+    );
   });
 }
 

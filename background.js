@@ -116,5 +116,4 @@ setInterval(() => {
       timeSpentToday: timeSpentToday,
     });
   });
-  console.log("time spent today", timeSpentToday);
 }, 1000);
