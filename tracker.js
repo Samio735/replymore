@@ -198,7 +198,6 @@ function init() {
 
     const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
 
-    checkDateChange();
     createContainer();
     createStatsElement();
     createProgressBar();
