@@ -223,8 +223,6 @@ function init() {
         event.target.closest("[role='textbox']")
       ) {
         // User clicked the tweet button to post
-        console.log(event.target);
-        console.log(event.target.value);
 
         reactToPost();
       }

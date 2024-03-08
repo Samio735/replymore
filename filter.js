@@ -25,6 +25,7 @@ function filterPosts() {
       "activateFilterPosts",
     ],
     (data) => {
+      console.log("data", data);
       const minViewsPerMinute = data.minViewsPerMinute || 0;
       const maxTimePassed = data.maxTimePassed || Infinity;
       const hideLikedPosts = data.hideLikedPosts || false;
@@ -150,8 +151,6 @@ function getTimePassed(time) {
 }
 
 function init() {
-  console.log("filter.js");
-
   chrome.storage.local.get(["paid", "trial"], (data) => {
     if (!data.paid && !data.trial) return;
     document.addEventListener("scroll", () => {

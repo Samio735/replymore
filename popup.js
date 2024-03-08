@@ -107,6 +107,7 @@ minReachEl.addEventListener("change", (e) => {
   chrome.storage.local.set({
     minViewsPerMinute: Number(e.target.value),
   });
+  console.log("minReachEl", e.target.value);
 });
 
 maxReplisEl.addEventListener("change", (e) => {

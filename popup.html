@@ -192,8 +192,8 @@
                           
 
             <div class="post-filter" style=" margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h3 style="margin-right: 6px; text-wrap: nowrap;"> Max post age : </h3> 
-      <div           style="
+      <h3 style="margin-right: 6px; text-wrap: nowrap;"> Max  age : </h3> 
+      <!-- <div           style="
             height: 100%;
             display: flex;
             gap: 0.2rem;
@@ -221,18 +221,18 @@
 
           "
         />
-                <!-- <button
-          id="save"
-     
-        >
-          Save
-        </button> -->
+               
         <p style="padding-right: 0.2rem;text-wrap: nowrap;"> hours</p>
-        </div>
+        </div> -->
+          <div class="">
+            <div style="display: flex; justify-content: space-between;">
+            <p style="margin-bottom: 0;">4</p> <p style="margin-bottom: 0;">hours</p> <p style="margin-bottom: 0;">24</p></div>
+          <input type="range" id="max-time" min="4" max="24" value="15" class="slider" id="myRange">
+</div>
       </div>
             <div class="post-filter" style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
       <h3 style="margin-right: 6px; text-wrap: nowrap;"> Min reach : </h3> 
-      <div           style="
+      <!-- <div           style="
             height: 100%;
             display: flex;
             gap: 0.2rem;
@@ -260,18 +260,21 @@
 
           "
         />
-                <!-- <button
-          id="save"
-     
-        >
-          Save
-        </button> -->
+               
         <p style="padding-right: 0.2rem;text-wrap: nowrap;"> view / min</p>
+        </div> -->
+        <div class="">
+            <div style="display: flex; justify-content: space-between;">
+            <p style="margin-bottom: 0;">0</p> <p style="margin-bottom: 0;">views/min</p> <p style="margin-bottom: 0;">30</p></div>
+
+        <input type="range" id="min-reach" min="0" max="15" value="10" class="slider" id="myRange">
         </div>
       </div>
-                  <div class="post-filter" style="margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
-      <h3 style="margin-right: 6px; text-wrap: nowrap;"> Max replies : </h3> 
+                  <div class="post-filter" style="display: none; opacity: 0; margin-bottom: 12px; display: flex; gap: 2px; height: 30px; align-items: center; justify-content: space-between;">
+      <h3 style="margin-right: 6px; text-wrap: nowrap; display: none;"> Max replies : </h3> 
       <div           style="
+      display: none;
+      opacity: 0;
             height: 100%;
             display: flex;
             gap: 0.2rem;
@@ -288,6 +291,7 @@
           id="max-replies"
           placeholder="0"
           style="
+              display: none;
             height: 100%;
             width: 3rem;
             background-color: #1775b5;
@@ -305,7 +309,7 @@
         >
           Save
         </button> -->
-        <p style="padding-right: 0.2rem;text-wrap: nowrap;"> replies</p>
+        <p style="     display: none; padding-right: 0.2rem;text-wrap: nowrap;"> replies</p>
         </div>
       </div>
   <div>
