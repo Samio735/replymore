@@ -116,4 +116,29 @@ setInterval(() => {
       timeSpentToday: timeSpentToday,
     });
   });
+  checkDateChange();
 }, 1000);
+
+function checkDateChange() {
+  const today = new Date().toLocaleDateString();
+  chrome.storage.local.get(
+    ["currentDay", "countDays", "todayCount", "countEachDay"],
+    (data) => {
+      console.log(data);
+      if (!data.countEachDay) data.countEachDay = [];
+      if (!data.currentDay) data.currentDay = today;
+      if (!data.todayCount) data.todayCount = 0;
+      (!data.countDays || data.countDays == 0) && (data.countDays = 1);
+
+      if (data.currentDay !== today) {
+        chrome.storage.local.set({
+          currentDay: today,
+          todayCount: 0,
+          countDays: data.countDays + 1,
+          timeSpentToday: 0,
+          countEachDay: data.countEachDay.push(data.todayCount),
+        });
+      }
+    }
+  );
+}

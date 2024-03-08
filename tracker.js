@@ -181,25 +181,6 @@ function reactToPost() {
 }
 // Add event listener for detecting comment or post activity
 
-function checkDateChange() {
-  const today = new Date().toLocaleDateString();
-  chrome.storage.local.get(
-    ["currentDay", "countDays", "todayCount", "countEachDay"],
-    (data) => {
-      (!data.countDays || data.countDays == 0) && (data.countDays = 1);
-      if (data.currentDay !== today) {
-        chrome.storage.local.set({
-          currentDay: today,
-          todayCount: 0,
-          countDays: data.countDays + 1,
-          timeSpentToday: 0,
-          countEachDay: data.countEachDay.push(data.todayCount),
-        });
-      }
-    }
-  );
-}
-
 // Function to play the audio
 function playAudio() {
   audio.play();
@@ -250,10 +231,6 @@ function init() {
       }
     });
 
-    setInterval(() => {
-      checkDateChange();
-    }, 1000 * 60);
-
     chrome.storage.onChanged.addListener((changes, namespace) => {
       updateStatsUI();
     });
@@ -263,7 +240,3 @@ function init() {
 }
 
 init();
-
-chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
-  console.log(data);
-});
