@@ -29,7 +29,7 @@ function init() {
       if (data.showTodayTime === undefined) data.showTodayTime = true;
       if (data.showAverageTime === undefined) data.showAverageTime = false;
       if (data.showTimePerTweet === undefined) data.showTimePerTweet = false;
-      if (data.showTodayRate === undefined) data.showTodayRate = true;
+      if (data.showTodayRate === undefined) data.showTodayRate = false;
       if (data.countEachDay === undefined) data.countEachDay = [];
       console.log(data.countEachDay);
       chrome.storage.local.set({
@@ -121,22 +121,25 @@ setInterval(() => {
 
 function checkDateChange() {
   const today = new Date().toLocaleDateString();
+  // const today = "2021-07-04";
   chrome.storage.local.get(
     ["currentDay", "countDays", "todayCount", "countEachDay"],
     (data) => {
       console.log(data);
+      console.log(data.currentDay);
       if (!data.countEachDay) data.countEachDay = [];
-      if (!data.currentDay) data.currentDay = today;
+      if (!data.currentDay) chrome.storage.local.set({ currentDay: today });
       if (!data.todayCount) data.todayCount = 0;
       (!data.countDays || data.countDays == 0) && (data.countDays = 1);
 
       if (data.currentDay !== today) {
+        console.log("new day");
         chrome.storage.local.set({
           currentDay: today,
           todayCount: 0,
           countDays: data.countDays + 1,
           timeSpentToday: 0,
-          countEachDay: data.countEachDay.push(data.todayCount),
+          // countEachDay: data.countEachDay.push(data.todayCount),
         });
       }
     }
