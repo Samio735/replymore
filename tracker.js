@@ -235,9 +235,10 @@ function init() {
     // a timer of the time that the user is spending on the website
   });
 }
-
-setInterval(() => {
-  chrome.runtime.sendMessage({ type: "clock-in" });
+let interval;
+interval = setInterval(() => {
+  if (document.visibilityState === "visible")
+    chrome.runtime.sendMessage({ type: "clock-in" });
 }, 1000);
 
 init();
