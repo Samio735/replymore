@@ -236,4 +236,8 @@ function init() {
   });
 }
 
+setInterval(() => {
+  chrome.runtime.sendMessage({ type: "clock-in" });
+}, 1000);
+
 init();
