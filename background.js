@@ -55,8 +55,7 @@ init();
 
 // background.js
 
-importScripts("ExtPay.js");
-
+importScripts("Extpay.js");
 var extpay = ExtPay("replymore");
 extpay.startBackground(); // this line is required to use ExtPay in the rest of your extension
 
@@ -105,17 +104,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+let intervalIslocked = false;
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === "clock-in") {
+    if (!intervalIslocked) {
+      intervalIslocked = true;
+      chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
+        let timeSpent = data.timeSpent || 0;
+        let timeSpentToday = data.timeSpentToday || 0;
+        timeSpent += 1;
+        timeSpentToday += 1;
+        chrome.storage.local.set({
+          timeSpent: timeSpent,
+          timeSpentToday: timeSpentToday,
+        });
+        console.log(timeSpentToday);
+      });
+
+      setTimeout(() => {
+        intervalIslocked = false;
+      }, 1000);
+    }
+  }
+});
+
 setInterval(() => {
-  chrome.storage.local.get(["timeSpent", "timeSpentToday"], (data) => {
-    let timeSpent = data.timeSpent || 0;
-    let timeSpentToday = data.timeSpentToday || 0;
-    timeSpent += 1;
-    timeSpentToday += 1;
-    chrome.storage.local.set({
-      timeSpent: timeSpent,
-      timeSpentToday: timeSpentToday,
-    });
-  });
   checkDateChange();
 }, 1000);
 
@@ -125,8 +139,6 @@ function checkDateChange() {
   chrome.storage.local.get(
     ["currentDay", "countDays", "todayCount", "countEachDay"],
     (data) => {
-      console.log(data);
-      console.log(data.currentDay);
       if (!data.countEachDay) data.countEachDay = [];
       if (!data.currentDay) chrome.storage.local.set({ currentDay: today });
       if (!data.todayCount) data.todayCount = 0;

@@ -1,7 +1,6 @@
 let filter = 5;
 let timout = true;
 function filterPosts() {
-  console.log("filterPosts");
   // get page url
   if (filter < 0) return;
   if (!timout) return;
@@ -25,7 +24,7 @@ function filterPosts() {
       "activateFilterPosts",
     ],
     (data) => {
-      console.log("data", data);
+      // console.log("data", data);
       const minViewsPerMinute = data.minViewsPerMinute || 0;
       const maxTimePassed = data.maxTimePassed || Infinity;
       const hideLikedPosts = data.hideLikedPosts || false;
@@ -233,8 +232,6 @@ function hideAd(ad) {
     ad.remove();
     adsHidden += 1;
   }
-
-  console.log("Twitter ads hidden: ", adsHidden.toString());
 }
 
 function getAndHideAds() {
