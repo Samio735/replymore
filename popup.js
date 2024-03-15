@@ -32,6 +32,8 @@ const notPayedEl = document.querySelector(".not-payed");
 const leaderboardContainerEl = document.querySelector(".leaderboard");
 const settingsBtn = document.querySelector(".settings-icon");
 const settingsContainerEl = document.querySelector(".Settings");
+const hoursNumberEl = document.getElementById("hours-number");
+const viewsNumberEl = document.getElementById("views-number");
 
 settingsBtn.addEventListener("click", () => {
   settingsContainerEl.classList.toggle("hidden");
@@ -101,13 +103,14 @@ maxTimeEl.addEventListener("change", (e) => {
   chrome.storage.local.set({
     maxTimePassed: Number(e.target.value),
   });
+  hoursNumberEl.innerText = e.target.value;
 });
 
 minReachEl.addEventListener("change", (e) => {
   chrome.storage.local.set({
     minViewsPerMinute: Number(e.target.value),
   });
-  console.log("minReachEl", e.target.value);
+  viewsNumberEl.innerText = e.target.value;
 });
 
 maxReplisEl.addEventListener("change", (e) => {
@@ -211,7 +214,9 @@ function updateUI() {
 
       dailyGoalEl.value = dailyGoal;
       maxTimeEl.value = maxTimePassed;
+      hoursNumberEl.textContent = maxTimePassed;
       minReachEl.value = minViewsPerMinute;
+      viewsNumberEl.textContent = minViewsPerMinute;
       maxReplisEl.value = maxReplyCount;
       todayCountEl.textContent = todayCount;
       overallCountEl.textContent = postCount;
