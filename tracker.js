@@ -193,47 +193,44 @@ function updateStatsUI() {
 // update stats and post count on storage change
 
 function init() {
-  chrome.storage.local.get(["paid", "trial"], (data) => {
-    if (!data.paid && !data.trial) return;
+  // Always initialize without payment check
+  const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
 
-    const audio = new Audio(chrome.runtime.getURL("Ding.mp3"));
+  createContainer();
+  createStatsElement();
+  createProgressBar();
+  updateStatsUI();
 
-    createContainer();
-    createStatsElement();
-    createProgressBar();
-    updateStatsUI();
-
-    document.addEventListener("click", function (event) {
-      if (
-        event.target.closest('[data-testid="tweetButtonInline"]') ||
-        event.target.closest('[data-testid="tweetButton"]') ||
-        event.target.closest('[data-testid="reply"]')
-      ) {
-        // User clicked the tweet button to post
-        reactToPost();
-      }
-    });
-
-    // Add event listener for detecting comment or post activity by clicking cmd+enter
-
-    document.addEventListener("keydown", function (event) {
-      if (
-        event.metaKey &&
-        event.key === "Enter" &&
-        event.target.closest("[role='textbox']")
-      ) {
-        // User clicked the tweet button to post
-
-        reactToPost();
-      }
-    });
-
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      updateStatsUI();
-    });
-
-    // a timer of the time that the user is spending on the website
+  document.addEventListener("click", function (event) {
+    if (
+      event.target.closest('[data-testid="tweetButtonInline"]') ||
+      event.target.closest('[data-testid="tweetButton"]') ||
+      event.target.closest('[data-testid="reply"]')
+    ) {
+      // User clicked the tweet button to post
+      reactToPost();
+    }
   });
+
+  // Add event listener for detecting comment or post activity by clicking cmd+enter
+
+  document.addEventListener("keydown", function (event) {
+    if (
+      event.metaKey &&
+      event.key === "Enter" &&
+      event.target.closest("[role='textbox']")
+    ) {
+      // User clicked the tweet button to post
+
+      reactToPost();
+    }
+  });
+
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    updateStatsUI();
+  });
+
+  // a timer of the time that the user is spending on the website
 }
 let interval;
 interval = setInterval(() => {

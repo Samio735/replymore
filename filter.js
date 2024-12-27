@@ -150,12 +150,10 @@ function getTimePassed(time) {
 }
 
 function init() {
-  chrome.storage.local.get(["paid", "trial"], (data) => {
-    if (!data.paid && !data.trial) return;
-    document.addEventListener("scroll", () => {
-      getAndHideAds();
-      filterPosts();
-    });
+  // Remove payment check and always run functionality
+  document.addEventListener("scroll", () => {
+    getAndHideAds();
+    filterPosts();
   });
 
   new PerformanceObserver((entryList) => {

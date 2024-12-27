@@ -26,8 +26,7 @@ const showTodayRateEl = document.getElementById("show-today-rate");
 const trackContainerEl = document.querySelector(".track-container");
 const filterContainerEl = document.querySelector(".filter-container");
 const containerEl = document.querySelector(".container");
-const freetrialBtn = document.getElementById("free-trial");
-const payBtn = document.getElementById("pay");
+// Remove freetrialBtn and payBtn references
 const notPayedEl = document.querySelector(".not-payed");
 const leaderboardContainerEl = document.querySelector(".leaderboard");
 const settingsBtn = document.querySelector(".settings-icon");
@@ -148,14 +147,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-freetrialBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ type: "start-free-trial" });
-});
-
-payBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ type: "pay" });
-});
-
 function switchToTrack() {
   trackContainerEl.style.display = "block";
   filterContainerEl.style.display = "none";
@@ -250,25 +241,9 @@ function updateUI() {
 }
 
 function init() {
-  chrome.storage.local.get(["paid", "trial", "trialStarted"], (data) => {
-    console.log(data.paid, data.trial);
-    if (!data.paid && !data.trial) {
-      containerEl.style.display = "none";
-    }
-    if (data.paid) {
-      freetrialBtn.style.display = "none";
-      notPayedEl.style.display = "none";
-    }
-    if (data.trialStarted && !data.paid) {
-      const p = document.createElement("p");
-      p.textContent = "Your free trial has started";
-      p.style.textAlign = "center";
-      notPayedEl.prepend(p);
-      freetrialBtn.style.display = "none";
-    }
-    switchToTrack();
-    updateUI();
-  });
+  // Always show container since payment check removed
+  switchToTrack();
+  updateUI();
   // leaderboard();
 }
 
